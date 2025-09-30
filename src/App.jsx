@@ -389,7 +389,7 @@ const addLog = function (logs, tipo, usuario, detalle) {
 
 const SimpleMap = function ({ lotes, selectedLote, onSelectLote }) {
   return (
-    <div className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden">
+    <div className="relative w-full h-64 sm:h-80 lg:h-96 bg-gray-100 rounded-lg overflow-hidden">
       <img
         src="https://tile.openstreetmap.org/12/2048/2560.png"
         alt="Map background"
@@ -397,7 +397,7 @@ const SimpleMap = function ({ lotes, selectedLote, onSelectLote }) {
       />
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-full h-full max-w-4xl mx-auto p-8">
+        <div className="relative w-full h-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
           {lotes.map(function (lote, idx) {
             return (
               <div
@@ -862,7 +862,7 @@ const LoginScreen = function ({ onLogin }) {
         }}></div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-5xl relative z-10 flex">
+      <div className="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-5xl relative z-10 flex flex-col lg:flex-row">
         {/* Panel izquierdo - Información */}
         <div className="hidden lg:block lg:w-1/2 bg-gradient-to-br from-green-700 to-green-900 p-12 text-white relative">
           <div className="relative z-10">
@@ -929,15 +929,15 @@ const LoginScreen = function ({ onLogin }) {
         </div>
 
         {/* Panel derecho - Login */}
-        <div className="w-full lg:w-1/2 p-12">
+        <div className="w-full lg:w-1/2 p-6 sm:p-8 lg:p-12">
           <div className="max-w-md mx-auto">
-            <div className="lg:hidden text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">ACRE Platform</h1>
+            <div className="lg:hidden text-center mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">ACRE Platform</h1>
               <p className="text-gray-600 text-sm">Agricultura de Precisión</p>
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Iniciar Sesión</h2>
-            <p className="text-gray-600 mb-8">Acceda a su cuenta profesional</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Iniciar Sesión</h2>
+            <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">Acceda a su cuenta profesional</p>
 
             <div className="space-y-5">
               <div>
@@ -1081,26 +1081,26 @@ const WizardPlanificacion = function ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
       {/* Professional Navbar */}
-      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-2xl border-b-4 border-green-900 mb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center space-x-4">
+      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-2xl border-b-4 border-green-900 mb-4 sm:mb-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <button
                 onClick={onCancel}
-                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 backdrop-blur-sm flex items-center space-x-2"
+                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold transition-all duration-200 backdrop-blur-sm flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base"
               >
                 <span>←</span>
-                <span>Cancelar</span>
+                <span className="hidden sm:inline">Cancelar</span>
               </button>
-              <div className="border-l border-white border-opacity-30 pl-4 h-12 flex flex-col justify-center">
-                <p className="text-green-200 text-xs font-semibold uppercase tracking-wide">Asistente de Planificación</p>
-                <p className="text-white text-xl font-bold">{lote.nombre}</p>
+              <div className="border-l border-white border-opacity-30 pl-2 sm:pl-4 h-10 sm:h-12 flex flex-col justify-center">
+                <p className="text-green-200 text-xs font-semibold uppercase tracking-wide hidden sm:block">Asistente de Planificación</p>
+                <p className="text-white text-base sm:text-xl font-bold">{lote.nombre}</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3">
-              <div className="text-right mr-2">
-                <p className="text-green-200 text-xs font-semibold uppercase">Superficie</p>
-                <p className="text-white text-lg font-bold">{lote.superficie} ha</p>
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="text-right">
+                <p className="text-green-200 text-xs font-semibold uppercase hidden sm:block">Superficie</p>
+                <p className="text-white text-sm sm:text-lg font-bold">{lote.superficie} ha</p>
               </div>
             </div>
           </div>
@@ -1176,18 +1176,18 @@ const WizardPlanificacion = function ({
                     <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">INFO</span>
                     Información General
                   </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                     <div>
                       <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Lote</p>
-                      <p className="text-xl font-bold text-gray-800">{lote.nombre}</p>
+                      <p className="text-lg sm:text-xl font-bold text-gray-800">{lote.nombre}</p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Campaña</p>
-                      <p className="text-xl font-bold text-gray-800">{lote.campana}</p>
+                      <p className="text-lg sm:text-xl font-bold text-gray-800">{lote.campana}</p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Superficie</p>
-                      <p className="text-xl font-bold text-green-600">{lote.superficie} <span className="text-sm">ha</span></p>
+                      <p className="text-lg sm:text-xl font-bold text-green-600">{lote.superficie} <span className="text-sm">ha</span></p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Estado ENSO</p>
@@ -1207,20 +1207,20 @@ const WizardPlanificacion = function ({
                       <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">SUELO</span>
                       Análisis de Suelo Disponible
                     </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                      <div className="bg-white rounded-lg p-4 shadow">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                      <div className="bg-white rounded-lg p-3 sm:p-4 shadow">
                         <p className="text-xs text-gray-500 uppercase font-semibold mb-2">pH del Suelo</p>
-                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.ph}</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-800">{lote.analisisSuelo.ph}</p>
                         <p className="text-xs text-gray-500 mt-1">Unidades pH</p>
                       </div>
-                      <div className="bg-white rounded-lg p-4 shadow">
+                      <div className="bg-white rounded-lg p-3 sm:p-4 shadow">
                         <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Materia Orgánica</p>
-                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.mo}<span className="text-lg">%</span></p>
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-800">{lote.analisisSuelo.mo}<span className="text-base sm:text-lg">%</span></p>
                         <p className="text-xs text-gray-500 mt-1">Porcentaje</p>
                       </div>
-                      <div className="bg-white rounded-lg p-4 shadow">
+                      <div className="bg-white rounded-lg p-3 sm:p-4 shadow">
                         <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Fósforo (P)</p>
-                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.p}</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-800">{lote.analisisSuelo.p}</p>
                         <p className="text-xs text-gray-500 mt-1">ppm</p>
                       </div>
                       <div className="bg-white rounded-lg p-4 shadow">
@@ -1283,10 +1283,10 @@ const WizardPlanificacion = function ({
                 <p className="text-green-100 mt-2">Configure los parámetros agronómicos de la planificación</p>
               </div>
 
-              <div className="p-8 space-y-6">
+              <div className="p-4 sm:p-6 lg:p-8 space-y-6">
                 {/* Cultivo Selection */}
-                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-600 shadow-lg">
-                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 sm:p-6 border-l-4 border-green-600 shadow-lg">
+                  <label className="block text-xs sm:text-sm font-bold text-gray-800 uppercase mb-3">
                     Cultivo a Planificar
                   </label>
                   <select
@@ -1294,7 +1294,7 @@ const WizardPlanificacion = function ({
                     onChange={function (e) {
                       setCultivo(e.target.value);
                     }}
-                    className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg font-semibold transition-all"
+                    className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-base sm:text-lg font-semibold transition-all"
                   >
                     <option value="">-- Seleccione un cultivo --</option>
                     <option value="soja">🌱 Soja</option>
@@ -1307,8 +1307,8 @@ const WizardPlanificacion = function ({
                 </div>
 
                 {/* Fecha de Siembra */}
-                <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border-l-4 border-blue-500 shadow-lg">
-                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-4 sm:p-6 border-l-4 border-blue-500 shadow-lg">
+                  <label className="block text-xs sm:text-sm font-bold text-gray-800 uppercase mb-3">
                     Fecha de Siembra Objetivo
                   </label>
                   <input
@@ -1317,7 +1317,7 @@ const WizardPlanificacion = function ({
                     onChange={function (e) {
                       setFechaSiembra(e.target.value);
                     }}
-                    className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-semibold transition-all"
+                    className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-base sm:text-lg font-semibold transition-all"
                   />
                   <p className="mt-2 text-xs text-gray-500">
                     La fecha de siembra afectará la ventana de aplicación de insumos
@@ -1325,8 +1325,8 @@ const WizardPlanificacion = function ({
                 </div>
 
                 {/* Rendimiento Objetivo */}
-                <div className="bg-gradient-to-br from-amber-50 to-white rounded-xl p-6 border-l-4 border-amber-500 shadow-lg">
-                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                <div className="bg-gradient-to-br from-amber-50 to-white rounded-xl p-4 sm:p-6 border-l-4 border-amber-500 shadow-lg">
+                  <label className="block text-xs sm:text-sm font-bold text-gray-800 uppercase mb-3">
                     Rendimiento Objetivo (kg/ha)
                   </label>
                   <div className="relative">
@@ -1336,14 +1336,14 @@ const WizardPlanificacion = function ({
                       onChange={function (e) {
                         setRendimientoObjetivo(e.target.value);
                       }}
-                      className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-lg font-semibold transition-all"
+                      className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-base sm:text-lg font-semibold transition-all"
                       placeholder="3800"
                     />
-                    <span className="absolute right-5 top-4 text-gray-500 font-semibold">kg/ha</span>
+                    <span className="absolute right-4 sm:right-5 top-3 sm:top-4 text-gray-500 font-semibold text-sm sm:text-base">kg/ha</span>
                   </div>
-                  <div className="mt-4 bg-amber-100 border border-amber-300 rounded-lg p-4">
-                    <p className="text-sm text-amber-900 font-semibold mb-1">📊 Rangos Sugeridos (ajustado por ENSO: {lote.enso})</p>
-                    <div className="grid grid-cols-3 gap-3 mt-2 text-xs">
+                  <div className="mt-4 bg-amber-100 border border-amber-300 rounded-lg p-3 sm:p-4">
+                    <p className="text-xs sm:text-sm text-amber-900 font-semibold mb-1">📊 Rangos Sugeridos (ajustado por ENSO: {lote.enso})</p>
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-2 text-xs">
                       <div className="bg-white rounded p-2 text-center">
                         <p className="font-bold text-gray-700">Soja</p>
                         <p className="text-green-600 font-semibold">3500-4500</p>
@@ -2170,16 +2170,16 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                 </div>
               </div>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table className="w-full min-w-[640px]">
                 <thead>
                   <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
-                    <th className="px-6 py-4 text-left font-bold">Producto</th>
-                    <th className="px-6 py-4 text-right font-bold">Dosis/ha</th>
-                    <th className="px-6 py-4 text-right font-bold">Cantidad Total</th>
-                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-bold">Producto</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Dosis/ha</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden sm:table-cell">Cant. Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden md:table-cell">Disponib.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden lg:table-cell">P. Unit.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Precio</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -2187,34 +2187,34 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                     const haySuficienteStock = f.cantidadTotal <= f.stock;
                     return (
                       <tr key={idx} className="hover:bg-amber-50 transition-colors">
-                        <td className="px-6 py-4">
-                          <p className="font-bold text-gray-800">{f.nombre}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                          <p className="font-bold text-gray-800 text-sm sm:text-base">{f.nombre}</p>
                           <p className="text-xs text-gray-500 mt-1">Fertilizante NPK</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="font-semibold text-gray-800">{f.cantidadHa}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">{f.cantidadHa}</p>
                           <p className="text-xs text-gray-500">{f.unidad}/ha</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-lg font-bold text-gray-800">{f.cantidadTotal.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden sm:table-cell">
+                          <p className="text-base sm:text-lg font-bold text-gray-800">{f.cantidadTotal.toLocaleString()}</p>
                           <p className="text-xs text-gray-500">{f.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
-                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
-                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden md:table-cell">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block" : "bg-red-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700 text-xs sm:text-sm" : "font-bold text-red-700 text-xs sm:text-sm"}>
+                              {haySuficienteStock ? "✓ OK" : "⚠ Insuf."}
                             </p>
                             <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
                               {f.stock.toLocaleString()} {f.unidad}
                             </p>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-gray-700">${(f.precio / f.cantidadTotal).toFixed(2)}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden lg:table-cell">
+                          <p className="text-gray-700 text-sm">${(f.precio / f.cantidadTotal).toFixed(2)}</p>
                           <p className="text-xs text-gray-500">/{f.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-xl font-bold text-gray-800">${f.precio.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="text-base sm:text-xl font-bold text-gray-800">${f.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -2249,16 +2249,16 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                 </div>
               </div>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table className="w-full min-w-[640px]">
                 <thead>
                   <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
-                    <th className="px-6 py-4 text-left font-bold">Variedad</th>
-                    <th className="px-6 py-4 text-right font-bold">Densidad</th>
-                    <th className="px-6 py-4 text-right font-bold">Cantidad</th>
-                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-bold">Variedad</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Densidad</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden sm:table-cell">Cantidad</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden md:table-cell">Disponib.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden lg:table-cell">P. Unit.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Precio</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -2266,34 +2266,34 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                     const haySuficienteStock = s.cantidadTotal <= s.stock;
                     return (
                       <tr key={idx} className="hover:bg-green-50 transition-colors">
-                        <td className="px-6 py-4">
-                          <p className="font-bold text-gray-800">{s.nombre}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                          <p className="font-bold text-gray-800 text-sm sm:text-base">{s.nombre}</p>
                           <p className="text-xs text-gray-500 mt-1 capitalize">{lote.planificacion.cultivo}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="font-semibold text-gray-800">{s.densidad.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">{s.densidad.toLocaleString()}</p>
                           <p className="text-xs text-gray-500">pl/ha</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-lg font-bold text-gray-800">{s.cantidadTotal.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden sm:table-cell">
+                          <p className="text-base sm:text-lg font-bold text-gray-800">{s.cantidadTotal.toLocaleString()}</p>
                           <p className="text-xs text-gray-500">{s.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
-                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
-                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden md:table-cell">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block" : "bg-red-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700 text-xs sm:text-sm" : "font-bold text-red-700 text-xs sm:text-sm"}>
+                              {haySuficienteStock ? "✓ OK" : "⚠ Insuf."}
                             </p>
                             <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
                               {s.stock.toLocaleString()} {s.unidad}
                             </p>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-gray-700">${(s.precio / s.cantidadTotal).toFixed(2)}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden lg:table-cell">
+                          <p className="text-gray-700 text-sm">${(s.precio / s.cantidadTotal).toFixed(2)}</p>
                           <p className="text-xs text-gray-500">/{s.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-xl font-bold text-gray-800">${s.precio.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="text-base sm:text-xl font-bold text-gray-800">${s.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -2328,16 +2328,16 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                 </div>
               </div>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table className="w-full min-w-[640px]">
                 <thead>
                   <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
-                    <th className="px-6 py-4 text-left font-bold">Producto</th>
-                    <th className="px-6 py-4 text-right font-bold">Dosis/ha</th>
-                    <th className="px-6 py-4 text-right font-bold">Cantidad Total</th>
-                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
-                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-bold">Producto</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Dosis/ha</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden sm:table-cell">Cant. Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden md:table-cell">Disponib.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold hidden lg:table-cell">P. Unit.</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right font-bold">Precio</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -2345,34 +2345,34 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
                     const haySuficienteStock = h.cantidadTotal <= h.stock;
                     return (
                       <tr key={idx} className="hover:bg-red-50 transition-colors">
-                        <td className="px-6 py-4">
-                          <p className="font-bold text-gray-800">{h.nombre}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4">
+                          <p className="font-bold text-gray-800 text-sm sm:text-base">{h.nombre}</p>
                           <p className="text-xs text-gray-500 mt-1">Herbicida</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="font-semibold text-gray-800">{h.cantidadHa}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">{h.cantidadHa}</p>
                           <p className="text-xs text-gray-500">{h.unidad}/ha</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-lg font-bold text-gray-800">{h.cantidadTotal.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden sm:table-cell">
+                          <p className="text-base sm:text-lg font-bold text-gray-800">{h.cantidadTotal.toLocaleString()}</p>
                           <p className="text-xs text-gray-500">{h.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
-                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
-                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden md:table-cell">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block" : "bg-red-100 rounded-lg px-2 sm:px-3 py-1 sm:py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700 text-xs sm:text-sm" : "font-bold text-red-700 text-xs sm:text-sm"}>
+                              {haySuficienteStock ? "✓ OK" : "⚠ Insuf."}
                             </p>
                             <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
                               {h.stock.toLocaleString()} {h.unidad}
                             </p>
                           </div>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-gray-700">${(h.precio / h.cantidadTotal).toFixed(2)}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right hidden lg:table-cell">
+                          <p className="text-gray-700 text-sm">${(h.precio / h.cantidadTotal).toFixed(2)}</p>
                           <p className="text-xs text-gray-500">/{h.unidad}</p>
                         </td>
-                        <td className="px-6 py-4 text-right">
-                          <p className="text-xl font-bold text-gray-800">${h.precio.toLocaleString()}</p>
+                        <td className="px-3 sm:px-6 py-3 sm:py-4 text-right">
+                          <p className="text-base sm:text-xl font-bold text-gray-800">${h.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -3235,26 +3235,26 @@ const AdminPanel = function ({
                     <span>Nuevo Cliente</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
-                  <table className="w-full">
+                <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0 rounded-xl border-2 border-gray-200">
+                  <table className="w-full min-w-[640px]">
                     <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Nombre
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden md:table-cell">
                           Razón Social
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden lg:table-cell">
                           CUIT
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden sm:table-cell">
                           Email
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Estado
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
@@ -3263,35 +3263,35 @@ const AdminPanel = function ({
                       {clientes.map(function (c) {
                         return (
                           <tr key={c.id} className="hover:bg-blue-50 transition-colors">
-                            <td className="px-6 py-4">
-                              <p className="font-bold text-gray-800">{c.nombre} {c.apellido}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
+                              <p className="font-bold text-gray-800 text-sm sm:text-base">{c.nombre} {c.apellido}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-700">{c.razonSocial}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden md:table-cell">
+                              <p className="text-gray-700 text-sm">{c.razonSocial}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-600 font-mono text-sm">{c.cuit}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden lg:table-cell">
+                              <p className="text-gray-600 font-mono text-xs sm:text-sm">{c.cuit}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-blue-600">{c.email}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
+                              <p className="text-blue-600 text-xs sm:text-sm truncate max-w-[150px]">{c.email}</p>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
                               <span
                                 className={
                                   c.estado === "Activo"
-                                    ? "px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold border border-green-300"
-                                    : "px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold border border-red-300"
+                                    ? "px-2 sm:px-3 py-1 sm:py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold border border-green-300"
+                                    : "px-2 sm:px-3 py-1 sm:py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold border border-red-300"
                                 }
                               >
                                 {c.estado === "Activo" ? "✓ " : "✗ "}{c.estado}
                               </span>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteCliente(c.id);
                                 }}
-                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all flex items-center space-x-1"
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
