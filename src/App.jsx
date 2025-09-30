@@ -3047,32 +3047,32 @@ const AdminPanel = function ({
       {/* Professional Admin Navbar */}
       <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-2xl border-b-4 border-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-20">
-            <div className="flex items-center space-x-4">
-              <div className="bg-green-600 p-3 rounded-lg">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex justify-between items-center h-16 sm:h-20">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="bg-green-600 p-2 sm:p-3 rounded-lg">
+                <svg className="w-5 h-5 sm:w-7 sm:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <p className="text-green-400 text-xs font-semibold uppercase tracking-wide">Panel de Control</p>
-                <p className="text-white text-2xl font-bold">Administración ACRE</p>
+                <p className="text-white text-xl sm:text-2xl font-bold">Administración ACRE</p>
               </div>
             </div>
-            <div className="flex items-center space-x-6">
-              <div className="text-right">
+            <div className="flex items-center space-x-2 sm:space-x-6">
+              <div className="text-right hidden md:block">
                 <p className="text-sm font-semibold text-white">{user.name}</p>
                 <p className="text-xs text-green-400 uppercase font-semibold">Administrador</p>
               </div>
               <button
                 onClick={onLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-all shadow-lg flex items-center space-x-2"
+                className="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-bold transition-all shadow-lg flex items-center space-x-1 sm:space-x-2"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                 </svg>
-                <span>Salir</span>
+                <span className="text-sm sm:text-base">Salir</span>
               </button>
             </div>
           </div>
@@ -3137,23 +3137,23 @@ const AdminPanel = function ({
         {/* Tabs Container */}
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-gray-800">
           {/* Tab Navigation */}
-          <div className="flex border-b-2 border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+          <div className="flex justify-around sm:justify-start border-b-2 border-gray-200 bg-gradient-to-r from-gray-50 to-white">
             <button
               onClick={function () {
                 setTab("clientes");
               }}
               className={
-                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
+                "flex-1 sm:flex-none px-3 sm:px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "clientes"
                   ? "border-b-4 border-blue-600 text-blue-600 bg-blue-50"
                   : "text-gray-600 hover:bg-gray-100")
               }
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                 </svg>
-                <span>Clientes</span>
+                <span className="hidden sm:inline">Clientes</span>
               </div>
             </button>
             <button
@@ -3161,17 +3161,17 @@ const AdminPanel = function ({
                 setTab("insumos");
               }}
               className={
-                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
+                "flex-1 sm:flex-none px-3 sm:px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "insumos"
                   ? "border-b-4 border-amber-600 text-amber-600 bg-amber-50"
                   : "text-gray-600 hover:bg-gray-100")
               }
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
                 </svg>
-                <span>Insumos</span>
+                <span className="hidden sm:inline">Insumos</span>
               </div>
             </button>
             <button
@@ -3179,17 +3179,17 @@ const AdminPanel = function ({
                 setTab("semillas");
               }}
               className={
-                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
+                "flex-1 sm:flex-none px-3 sm:px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "semillas"
                   ? "border-b-4 border-green-600 text-green-600 bg-green-50"
                   : "text-gray-600 hover:bg-gray-100")
               }
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                 </svg>
-                <span>Semillas</span>
+                <span className="hidden sm:inline">Semillas</span>
               </div>
             </button>
             <button
@@ -3197,29 +3197,29 @@ const AdminPanel = function ({
                 setTab("logs");
               }}
               className={
-                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
+                "flex-1 sm:flex-none px-3 sm:px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "logs"
                   ? "border-b-4 border-purple-600 text-purple-600 bg-purple-50"
                   : "text-gray-600 hover:bg-gray-100")
               }
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center justify-center sm:justify-start space-x-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
-                <span>Logs del Sistema</span>
+                <span className="hidden sm:inline">Logs del Sistema</span>
               </div>
             </button>
           </div>
 
-          <div className="p-8">
+          <div className="p-4 sm:p-8">
             {tab === "clientes" && (
               <div>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center flex-wrap">
                       <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">GESTIÓN</span>
-                      Base de Clientes
+                      <span>Base de Clientes</span>
                     </h2>
                     <p className="text-sm text-gray-600 mt-1">Administración de clientes registrados en el sistema</p>
                   </div>
@@ -3227,7 +3227,7 @@ const AdminPanel = function ({
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold shadow-lg flex items-center justify-center space-x-2 transition-all whitespace-nowrap"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
@@ -3235,7 +3235,7 @@ const AdminPanel = function ({
                     <span>Nuevo Cliente</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0 rounded-xl border-2 border-gray-200">
+                <div className="overflow-x-auto -mx-4 px-4 sm:-mx-0 sm:px-0 rounded-xl border-2 border-gray-200">
                   <table className="w-full min-w-[640px]">
                     <thead className="bg-gray-800 text-white">
                       <tr>
@@ -3310,11 +3310,11 @@ const AdminPanel = function ({
 
             {tab === "insumos" && (
               <div>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center flex-wrap">
                       <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">CATÁLOGO</span>
-                      Insumos Agronómicos
+                      <span>Insumos Agronómicos</span>
                     </h2>
                     <p className="text-sm text-gray-600 mt-1">Fertilizantes y productos fitosanitarios disponibles</p>
                   </div>
@@ -3322,7 +3322,7 @@ const AdminPanel = function ({
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
+                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold shadow-lg flex items-center justify-center space-x-2 transition-all whitespace-nowrap"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
@@ -3330,26 +3330,26 @@ const AdminPanel = function ({
                     <span>Nuevo Insumo</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
-                  <table className="w-full">
+                <div className="overflow-x-auto -mx-4 px-4 sm:-mx-0 sm:px-0 rounded-xl border-2 border-gray-200">
+                  <table className="w-full min-w-[640px]">
                     <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Nombre
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden md:table-cell">
                           Tipo
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden lg:table-cell">
                           Composición
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Precio
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden sm:table-cell">
                           Stock
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
@@ -3358,27 +3358,27 @@ const AdminPanel = function ({
                       {insumos.map(function (i) {
                         return (
                           <tr key={i.id} className="hover:bg-amber-50 transition-colors">
-                            <td className="px-6 py-4">
-                              <p className="font-bold text-gray-800">{i.nombre}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
+                              <p className="font-bold text-gray-800 text-sm sm:text-base">{i.nombre}</p>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden md:table-cell">
                               <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold">{i.tipo}</span>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden lg:table-cell">
                               <p className="text-gray-700 text-sm">{i.composicion}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="font-bold text-green-600">${i.precio}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
+                              <p className="font-bold text-green-600 text-sm sm:text-base">${i.precio}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-700"><span className="font-bold">{i.stock}</span> {i.unidad}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
+                              <p className="text-gray-700 text-sm"><span className="font-bold">{i.stock}</span> {i.unidad}</p>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteInsumo(i.id);
                                 }}
-                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all flex items-center space-x-1"
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -3397,11 +3397,11 @@ const AdminPanel = function ({
 
             {tab === "semillas" && (
               <div>
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 flex items-center flex-wrap">
                       <span className="bg-green-100 text-green-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">CATÁLOGO</span>
-                      Semillas Certificadas
+                      <span>Semillas Certificadas</span>
                     </h2>
                     <p className="text-sm text-gray-600 mt-1">Variedades de semillas disponibles para planificación</p>
                   </div>
@@ -3409,7 +3409,7 @@ const AdminPanel = function ({
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
+                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold shadow-lg flex items-center justify-center space-x-2 transition-all whitespace-nowrap"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
@@ -3417,29 +3417,29 @@ const AdminPanel = function ({
                     <span>Nueva Semilla</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
-                  <table className="w-full">
+                <div className="overflow-x-auto -mx-4 px-4 sm:-mx-0 sm:px-0 rounded-xl border-2 border-gray-200">
+                  <table className="w-full min-w-[640px]">
                     <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Cultivo
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden md:table-cell">
                           Variedad
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden lg:table-cell">
                           Ciclo
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden xl:table-cell">
                           Densidad Media
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Precio
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider hidden sm:table-cell">
                           Stock
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
+                        <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
@@ -3448,30 +3448,30 @@ const AdminPanel = function ({
                       {semillas.map(function (s) {
                         return (
                           <tr key={s.id} className="hover:bg-green-50 transition-colors">
-                            <td className="px-6 py-4">
-                              <p className="font-bold text-gray-800 capitalize">{s.cultivo}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
+                              <p className="font-bold text-gray-800 capitalize text-sm sm:text-base">{s.cultivo}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-700">{s.nombre}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden md:table-cell">
+                              <p className="text-gray-700 text-sm">{s.nombre}</p>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden lg:table-cell">
                               <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold">{s.ciclo}</span>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-700"><span className="font-bold">{s.densidadMedia.toLocaleString()}</span> pl/ha</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden xl:table-cell">
+                              <p className="text-gray-700 text-sm"><span className="font-bold">{s.densidadMedia.toLocaleString()}</span> pl/ha</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="font-bold text-green-600">${s.precio}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
+                              <p className="font-bold text-green-600 text-sm sm:text-base">${s.precio}</p>
                             </td>
-                            <td className="px-6 py-4">
-                              <p className="text-gray-700"><span className="font-bold">{s.stock}</span> {s.unidad}</p>
+                            <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
+                              <p className="text-gray-700 text-sm"><span className="font-bold">{s.stock}</span> {s.unidad}</p>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-3 sm:px-6 py-3 sm:py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteSemilla(s.id);
                                 }}
-                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all flex items-center space-x-1"
                               >
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
