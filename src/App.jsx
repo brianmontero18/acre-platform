@@ -2932,22 +2932,36 @@ const AdminPanel = function ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
+      {/* Professional Admin Navbar */}
+      <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-2xl border-b-4 border-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-green-600">
-                ACRE Admin
-              </span>
-            </div>
+          <div className="flex justify-between h-20">
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">{user.name}</span>
+              <div className="bg-green-600 p-3 rounded-lg">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-green-400 text-xs font-semibold uppercase tracking-wide">Panel de Control</p>
+                <p className="text-white text-2xl font-bold">Administración ACRE</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-6">
+              <div className="text-right">
+                <p className="text-sm font-semibold text-white">{user.name}</p>
+                <p className="text-xs text-green-400 uppercase font-semibold">Administrador</p>
+              </div>
               <button
                 onClick={onLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold transition-all shadow-lg flex items-center space-x-2"
               >
-                Cerrar Sesión
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                <span>Salir</span>
               </button>
             </div>
           </div>
@@ -2955,133 +2969,223 @@ const AdminPanel = function ({
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-3xl font-bold mb-8">Panel de Administración</h1>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Gestión del Sistema</h1>
+          <p className="text-gray-600">Administración de catálogos, clientes y monitoreo del sistema</p>
+        </div>
 
-        <div className="bg-white rounded-lg shadow">
-          <div className="flex border-b">
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-600">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600 uppercase">Clientes</p>
+              <div className="bg-blue-100 p-2 rounded-lg">
+                <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+            </div>
+            <p className="text-3xl font-bold text-gray-800">{clientes.length}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-amber-600">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600 uppercase">Insumos</p>
+              <div className="bg-amber-100 p-2 rounded-lg">
+                <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                </svg>
+              </div>
+            </div>
+            <p className="text-3xl font-bold text-gray-800">{insumos.length}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-600">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600 uppercase">Semillas</p>
+              <div className="bg-green-100 p-2 rounded-lg">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+            </div>
+            <p className="text-3xl font-bold text-gray-800">{semillas.length}</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-600">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-gray-600 uppercase">Logs Sistema</p>
+              <div className="bg-purple-100 p-2 rounded-lg">
+                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+            </div>
+            <p className="text-3xl font-bold text-gray-800">{logs.length}</p>
+          </div>
+        </div>
+
+        {/* Tabs Container */}
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-gray-800">
+          {/* Tab Navigation */}
+          <div className="flex border-b-2 border-gray-200 bg-gradient-to-r from-gray-50 to-white">
             <button
               onClick={function () {
                 setTab("clientes");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "clientes"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-blue-600 text-blue-600 bg-blue-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Clientes
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                <span>Clientes</span>
+              </div>
             </button>
             <button
               onClick={function () {
                 setTab("insumos");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "insumos"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-amber-600 text-amber-600 bg-amber-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Insumos
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                </svg>
+                <span>Insumos</span>
+              </div>
             </button>
             <button
               onClick={function () {
                 setTab("semillas");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "semillas"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-green-600 text-green-600 bg-green-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Semillas
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+                <span>Semillas</span>
+              </div>
             </button>
             <button
               onClick={function () {
                 setTab("logs");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "logs"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-purple-600 text-purple-600 bg-purple-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Logs del Sistema
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Logs del Sistema</span>
+              </div>
             </button>
           </div>
 
-          <div className="p-6">
+          <div className="p-8">
             {tab === "clientes" && (
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Gestión de Clientes</h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                      <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">GESTIÓN</span>
+                      Base de Clientes
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">Administración de clientes registrados en el sistema</p>
+                  </div>
                   <button
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
                   >
-                    + Nuevo Cliente
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Nuevo Cliente</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Nombre
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Razón Social
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           CUIT
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Email
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Estado
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-200">
                       {clientes.map(function (c) {
                         return (
-                          <tr key={c.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-sm">
-                              {c.nombre} {c.apellido}
+                          <tr key={c.id} className="hover:bg-blue-50 transition-colors">
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-gray-800">{c.nombre} {c.apellido}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">
-                              {c.razonSocial}
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700">{c.razonSocial}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">{c.cuit}</td>
-                            <td className="px-4 py-3 text-sm">{c.email}</td>
-                            <td className="px-4 py-3 text-sm">
+                            <td className="px-6 py-4">
+                              <p className="text-gray-600 font-mono text-sm">{c.cuit}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="text-blue-600">{c.email}</p>
+                            </td>
+                            <td className="px-6 py-4">
                               <span
                                 className={
                                   c.estado === "Activo"
-                                    ? "px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"
-                                    : "px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs"
+                                    ? "px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold border border-green-300"
+                                    : "px-3 py-1.5 bg-red-100 text-red-700 rounded-lg text-xs font-bold border border-red-300"
                                 }
                               >
-                                {c.estado}
+                                {c.estado === "Activo" ? "✓ " : "✗ "}{c.estado}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-sm">
+                            <td className="px-6 py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteCliente(c.id);
                                 }}
-                                className="text-red-600 hover:text-red-800"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
                               >
-                                Eliminar
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                <span>Eliminar</span>
                               </button>
                             </td>
                           </tr>
@@ -3096,63 +3200,79 @@ const AdminPanel = function ({
             {tab === "insumos" && (
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Catálogo de Insumos</h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                      <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">CATÁLOGO</span>
+                      Insumos Agronómicos
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">Fertilizantes y productos fitosanitarios disponibles</p>
+                  </div>
                   <button
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
                   >
-                    + Nuevo Insumo
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Nuevo Insumo</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Nombre
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Tipo
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Composición
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Precio
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Stock
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-200">
                       {insumos.map(function (i) {
                         return (
-                          <tr key={i.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-sm font-medium">
-                              {i.nombre}
+                          <tr key={i.id} className="hover:bg-amber-50 transition-colors">
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-gray-800">{i.nombre}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">{i.tipo}</td>
-                            <td className="px-4 py-3 text-sm">
-                              {i.composicion}
+                            <td className="px-6 py-4">
+                              <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold">{i.tipo}</span>
                             </td>
-                            <td className="px-4 py-3 text-sm">${i.precio}</td>
-                            <td className="px-4 py-3 text-sm">
-                              {i.stock} {i.unidad}
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700 text-sm">{i.composicion}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-green-600">${i.precio}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700"><span className="font-bold">{i.stock}</span> {i.unidad}</p>
+                            </td>
+                            <td className="px-6 py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteInsumo(i.id);
                                 }}
-                                className="text-red-600 hover:text-red-800"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
                               >
-                                Eliminar
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                <span>Eliminar</span>
                               </button>
                             </td>
                           </tr>
@@ -3167,67 +3287,85 @@ const AdminPanel = function ({
             {tab === "semillas" && (
               <div>
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold">Catálogo de Semillas</h2>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                      <span className="bg-green-100 text-green-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">CATÁLOGO</span>
+                      Semillas Certificadas
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1">Variedades de semillas disponibles para planificación</p>
+                  </div>
                   <button
                     onClick={function () {
                       setShowAddModal(true);
                     }}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 rounded-lg font-bold shadow-lg flex items-center space-x-2 transition-all"
                   >
-                    + Nueva Semilla
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Nueva Semilla</span>
                   </button>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto rounded-xl border-2 border-gray-200">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-800 text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Cultivo
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Variedad
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Ciclo
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Densidad Media
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Precio
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Stock
                         </th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                        <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider">
                           Acciones
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-200">
                       {semillas.map(function (s) {
                         return (
-                          <tr key={s.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-sm font-medium">
-                              {s.cultivo}
+                          <tr key={s.id} className="hover:bg-green-50 transition-colors">
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-gray-800 capitalize">{s.cultivo}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">{s.nombre}</td>
-                            <td className="px-4 py-3 text-sm">{s.ciclo}</td>
-                            <td className="px-4 py-3 text-sm">
-                              {s.densidadMedia.toLocaleString()} pl/ha
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700">{s.nombre}</p>
                             </td>
-                            <td className="px-4 py-3 text-sm">${s.precio}</td>
-                            <td className="px-4 py-3 text-sm">
-                              {s.stock} {s.unidad}
+                            <td className="px-6 py-4">
+                              <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold">{s.ciclo}</span>
                             </td>
-                            <td className="px-4 py-3 text-sm">
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700"><span className="font-bold">{s.densidadMedia.toLocaleString()}</span> pl/ha</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-green-600">${s.precio}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="text-gray-700"><span className="font-bold">{s.stock}</span> {s.unidad}</p>
+                            </td>
+                            <td className="px-6 py-4">
                               <button
                                 onClick={function () {
                                   handleDeleteSemilla(s.id);
                                 }}
-                                className="text-red-600 hover:text-red-800"
+                                className="bg-red-100 hover:bg-red-200 text-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition-all flex items-center space-x-1"
                               >
-                                Eliminar
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                                <span>Eliminar</span>
                               </button>
                             </td>
                           </tr>
@@ -3241,45 +3379,53 @@ const AdminPanel = function ({
 
             {tab === "logs" && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">
-                  Logs del Sistema
-                </h2>
-                <div className="space-y-2">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <span className="bg-purple-100 text-purple-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">MONITOR</span>
+                    Logs del Sistema
+                  </h2>
+                  <p className="text-sm text-gray-600 mt-1">Registro de actividad y eventos del sistema</p>
+                </div>
+                <div className="space-y-3">
                   {logs.length === 0 ? (
-                    <p className="text-gray-500 text-center py-8">
-                      No hay logs registrados aún
-                    </p>
+                    <div className="bg-gray-50 rounded-xl p-12 text-center border-2 border-gray-200">
+                      <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                      </svg>
+                      <p className="text-gray-500 text-lg font-semibold">No hay logs registrados aún</p>
+                      <p className="text-gray-400 text-sm mt-1">Los eventos del sistema aparecerán aquí</p>
+                    </div>
                   ) : (
                     logs.map(function (log) {
                       return (
                         <div
                           key={log.id}
-                          className="p-4 border rounded-lg hover:bg-gray-50"
+                          className="p-5 border-2 border-gray-200 rounded-xl hover:border-purple-300 hover:shadow-lg transition-all bg-white"
                         >
                           <div className="flex justify-between items-start">
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
+                              <div className="flex items-center gap-3 mb-2">
                                 <span
                                   className={
-                                    "px-2 py-1 text-xs rounded-full " +
+                                    "px-3 py-1.5 text-xs font-bold rounded-lg border-2 " +
                                     (log.tipo === "Error"
-                                      ? "bg-red-100 text-red-800"
+                                      ? "bg-red-100 text-red-700 border-red-300"
                                       : log.tipo === "Login"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : "bg-green-100 text-green-800")
+                                      ? "bg-blue-100 text-blue-700 border-blue-300"
+                                      : "bg-green-100 text-green-700 border-green-300")
                                   }
                                 >
                                   {log.tipo}
                                 </span>
-                                <span className="text-sm text-gray-600">
+                                <span className="text-sm font-bold text-gray-700">
                                   {log.usuario}
                                 </span>
                               </div>
-                              <p className="text-sm text-gray-800">
+                              <p className="text-sm text-gray-600">
                                 {log.detalle}
                               </p>
                             </div>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-gray-500 font-mono bg-gray-100 px-3 py-1.5 rounded-lg">
                               {log.fecha}
                             </span>
                           </div>
