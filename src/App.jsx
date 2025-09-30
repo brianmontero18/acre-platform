@@ -1623,76 +1623,108 @@ const CargaDatos = function ({ lote, onBack, onComplete }) {
     suelo.ph && suelo.mo && suelo.p && suelo.n && napas;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
+      {/* Professional Navbar */}
+      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-2xl border-b-4 border-green-900 mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16">
-            <button
-              onClick={onBack}
-              className="mr-4 text-gray-600 hover:text-gray-800"
-            >
-              ← Volver
-            </button>
-            <span className="text-2xl font-bold text-green-600">
-              Centro de Carga de Datos
-            </span>
-            <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={onBack}
+                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 backdrop-blur-sm flex items-center space-x-2"
+              >
+                <span>←</span>
+                <span>Volver</span>
+              </button>
+              <div className="border-l border-white border-opacity-30 pl-4 h-12 flex flex-col justify-center">
+                <p className="text-green-200 text-xs font-semibold uppercase tracking-wide">Centro de Carga</p>
+                <p className="text-white text-xl font-bold">{lote.nombre}</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                <p className="text-green-200 text-xs font-semibold uppercase">Superficie</p>
+                <p className="text-white text-lg font-bold">{lote.superficie} ha</p>
+              </div>
+            </div>
           </div>
         </div>
       </nav>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow">
-          <div className="flex border-b">
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden border-t-4 border-green-600">
+          {/* Tab Navigation */}
+          <div className="flex border-b-2 border-gray-200 bg-gradient-to-r from-gray-50 to-white">
             <button
               onClick={function () {
                 setTab("suelo");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "suelo"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-amber-600 text-amber-600 bg-amber-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Análisis de Suelo
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <span>Análisis de Suelo</span>
+              </div>
             </button>
             <button
               onClick={function () {
                 setTab("malezas");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "malezas"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-red-600 text-red-600 bg-red-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Mapas de Malezas
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 7m0 13V7m0 0L9 4"/>
+                </svg>
+                <span>Mapas de Malezas</span>
+              </div>
             </button>
             <button
               onClick={function () {
                 setTab("napas");
               }}
               className={
-                "px-6 py-4 font-semibold " +
+                "px-8 py-5 font-bold text-sm uppercase tracking-wide transition-all " +
                 (tab === "napas"
-                  ? "border-b-2 border-green-600 text-green-600"
-                  : "text-gray-600")
+                  ? "border-b-4 border-blue-600 text-blue-600 bg-blue-50"
+                  : "text-gray-600 hover:bg-gray-100")
               }
             >
-              Napas Freáticas
+              <div className="flex items-center space-x-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                </svg>
+                <span>Napas Freáticas</span>
+              </div>
             </button>
           </div>
 
           <div className="p-8">
             {tab === "suelo" && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Análisis de Suelo</h2>
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      pH
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <span className="bg-amber-100 text-amber-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">ANÁLISIS</span>
+                    Parámetros de Suelo
+                  </h2>
+                  <p className="text-sm text-gray-600 mt-1">Ingrese los resultados del análisis de laboratorio</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-amber-50 to-white rounded-xl p-6 border-l-4 border-amber-500 shadow-lg">
+                    <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                      pH del Suelo
                     </label>
                     <input
                       type="number"
@@ -1706,13 +1738,14 @@ const CargaDatos = function ({ lote, onBack, onComplete }) {
                           n: suelo.n,
                         });
                       }}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-lg font-semibold transition-all"
                       placeholder="6.5"
                     />
+                    <p className="mt-2 text-xs text-gray-500">Rango óptimo: 5.8 - 7.2</p>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-6 border-l-4 border-green-500 shadow-lg">
+                    <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
                       Materia Orgánica (%)
                     </label>
                     <input
@@ -1727,74 +1760,101 @@ const CargaDatos = function ({ lote, onBack, onComplete }) {
                           n: suelo.n,
                         });
                       }}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg font-semibold transition-all"
                       placeholder="3.2"
                     />
+                    <p className="mt-2 text-xs text-gray-500">Rango óptimo: 2.5 - 4.5%</p>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Fósforo (ppm)
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border-l-4 border-blue-500 shadow-lg">
+                    <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                      Fósforo (P)
                     </label>
-                    <input
-                      type="number"
-                      value={suelo.p}
-                      onChange={function (e) {
-                        setSuelo({
-                          ph: suelo.ph,
-                          mo: suelo.mo,
-                          p: e.target.value,
-                          n: suelo.n,
-                        });
-                      }}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                      placeholder="18"
-                    />
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={suelo.p}
+                        onChange={function (e) {
+                          setSuelo({
+                            ph: suelo.ph,
+                            mo: suelo.mo,
+                            p: e.target.value,
+                            n: suelo.n,
+                          });
+                        }}
+                        className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-semibold transition-all"
+                        placeholder="18"
+                      />
+                      <span className="absolute right-5 top-4 text-gray-500 font-semibold">ppm</span>
+                    </div>
+                    <p className="mt-2 text-xs text-gray-500">Rango óptimo: 15 - 25 ppm</p>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nitrógeno (kg/ha)
+                  <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl p-6 border-l-4 border-purple-500 shadow-lg">
+                    <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                      Nitrógeno (N)
                     </label>
-                    <input
-                      type="number"
-                      value={suelo.n}
-                      onChange={function (e) {
-                        setSuelo({
-                          ph: suelo.ph,
-                          mo: suelo.mo,
-                          p: suelo.p,
-                          n: e.target.value,
-                        });
-                      }}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                      placeholder="45"
-                    />
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={suelo.n}
+                        onChange={function (e) {
+                          setSuelo({
+                            ph: suelo.ph,
+                            mo: suelo.mo,
+                            p: suelo.p,
+                            n: e.target.value,
+                          });
+                        }}
+                        className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-lg font-semibold transition-all"
+                        placeholder="45"
+                      />
+                      <span className="absolute right-5 top-4 text-gray-500 font-semibold">kg/ha</span>
+                    </div>
+                    <p className="mt-2 text-xs text-gray-500">Rango óptimo: 40 - 60 kg/ha</p>
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-gray-700">
-                    <strong>Nota:</strong> Los valores ingresados se utilizarán
-                    para calcular las necesidades de fertilización del lote.
-                  </p>
+                <div className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-blue-500 text-white p-2 rounded-lg mt-1">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-blue-900 mb-1">Información Importante</p>
+                      <p className="text-sm text-blue-800">
+                        Los valores ingresados se utilizarán para calcular las necesidades específicas de fertilización del lote.
+                        Asegúrese de que los datos provengan de un análisis de laboratorio reciente (último año).
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             {tab === "malezas" && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">Mapa de Malezas</h2>
-                <p className="text-gray-600 mb-6">
-                  Seleccione las malezas presentes en el lote:
-                </p>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <span className="bg-red-100 text-red-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">MAPEO</span>
+                    Registro de Malezas
+                  </h2>
+                  <p className="text-sm text-gray-600 mt-1">Seleccione las malezas presentes en el lote</p>
+                </div>
 
                 <div className="space-y-4">
                   {malezas.map(function (maleza, idx) {
                     return (
                       <label
                         key={idx}
-                        className="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                        className={
+                          "flex items-center p-6 border-2 rounded-xl cursor-pointer transition-all shadow-md " +
+                          (maleza.presente
+                            ? "bg-red-50 border-red-400 hover:border-red-500 hover:shadow-lg"
+                            : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg")
+                        }
                       >
                         <input
                           type="checkbox"
@@ -1807,63 +1867,114 @@ const CargaDatos = function ({ lote, onBack, onComplete }) {
                             };
                             setMalezas(newMalezas);
                           }}
-                          className="w-5 h-5 text-green-600 rounded focus:ring-green-500"
+                          className="w-6 h-6 text-red-600 rounded-lg focus:ring-red-500 focus:ring-2"
                         />
-                        <span className="ml-3 text-lg">{maleza.nombre}</span>
+                        <div className="ml-4 flex-1">
+                          <p className="text-lg font-bold text-gray-800">{maleza.nombre}</p>
+                          {maleza.presente && (
+                            <p className="text-xs text-red-600 font-semibold mt-1">✓ Presente en el lote</p>
+                          )}
+                        </div>
+                        {maleza.presente && (
+                          <div className="bg-red-100 px-3 py-1 rounded-lg">
+                            <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                          </div>
+                        )}
                       </label>
                     );
                   })}
                 </div>
 
-                <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-sm text-gray-700">
-                    <strong>Versión Post-MVP:</strong> Podrás subir archivos
-                    Shapefile o dibujar zonas directamente en el mapa.
-                  </p>
+                <div className="mt-8 bg-yellow-50 border-2 border-yellow-300 rounded-xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-yellow-500 text-white p-2 rounded-lg mt-1">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-yellow-900 mb-1">Próxima Funcionalidad</p>
+                      <p className="text-sm text-yellow-900">
+                        <strong>Versión Post-MVP:</strong> Podrás subir archivos Shapefile o dibujar zonas directamente en el mapa para mapeo georreferenciado de malezas.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
             {tab === "napas" && (
               <div>
-                <h2 className="text-2xl font-bold mb-6">
-                  Profundidad de Napas Freáticas
-                </h2>
-                <div className="max-w-md">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Profundidad estimada (metros)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={napas}
-                    onChange={function (e) {
-                      setNapas(e.target.value);
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                    placeholder="2.5"
-                  />
-                  <p className="mt-2 text-sm text-gray-600">
-                    Este dato ayuda a evaluar riesgos de encharcamiento y
-                    estrategias de drenaje.
-                  </p>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-lg text-sm font-bold mr-3">HIDROLOGÍA</span>
+                    Profundidad de Napas Freáticas
+                  </h2>
+                  <p className="text-sm text-gray-600 mt-1">Medición de la profundidad del agua subterránea</p>
+                </div>
+                <div className="max-w-2xl">
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-8 border-l-4 border-blue-500 shadow-lg">
+                    <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                      Profundidad Estimada
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        step="0.1"
+                        value={napas}
+                        onChange={function (e) {
+                          setNapas(e.target.value);
+                        }}
+                        className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-semibold transition-all"
+                        placeholder="2.5"
+                      />
+                      <span className="absolute right-5 top-4 text-gray-500 font-semibold">metros</span>
+                    </div>
+                    <p className="mt-4 text-sm text-gray-600">
+                      <strong>Uso del dato:</strong> Este valor ayuda a evaluar riesgos de encharcamiento, necesidades de drenaje y disponibilidad hídrica del cultivo.
+                    </p>
+                  </div>
+
+                  <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                    <div className="flex items-start space-x-3">
+                      <div className="bg-blue-500 text-white p-2 rounded-lg mt-1">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold text-blue-900 mb-1">Referencia de Profundidad</p>
+                        <ul className="text-sm text-blue-800 space-y-1">
+                          <li><strong>&lt; 1 metro:</strong> Alto riesgo de encharcamiento</li>
+                          <li><strong>1-2 metros:</strong> Riesgo moderado, evaluar drenaje</li>
+                          <li><strong>&gt; 2 metros:</strong> Condiciones favorables</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
-            <div className="mt-8 flex justify-end space-x-4">
+            <div className="mt-10 pt-6 border-t-2 border-gray-200 flex justify-between">
               <button
                 onClick={onBack}
-                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-8 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-bold transition-all flex items-center space-x-2"
               >
-                Cancelar
+                <span>←</span>
+                <span>Cancelar</span>
               </button>
               <button
                 onClick={handleSave}
                 disabled={!isValid}
-                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                className="px-10 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-bold text-lg shadow-2xl flex items-center space-x-3 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-200 transform hover:scale-105"
               >
-                Guardar Datos
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/>
+                </svg>
+                <span>Guardar Datos</span>
               </button>
             </div>
           </div>
