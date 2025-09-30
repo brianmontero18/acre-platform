@@ -1,0 +1,2845 @@
+import React, { useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area,
+} from "recharts";
+
+// ============================================================================
+// MOCK DATA - Simulación de datos del sistema
+// ============================================================================
+
+const MOCK_USERS = {
+  admin: {
+    email: "admin@acre.com",
+    password: "admin",
+    role: "admin",
+    name: "Admin ACRE",
+  },
+  productor: {
+    email: "productor@campo.com",
+    password: "prod",
+    role: "productor",
+    name: "Juan Pérez",
+  },
+};
+
+const INITIAL_CLIENTES = [
+  {
+    id: 1,
+    nombre: "Juan",
+    apellido: "Pérez",
+    razonSocial: "Estancia El Progreso",
+    cuit: "20-12345678-9",
+    email: "juan@campo.com",
+    telefono: "+54 9 11 1234-5678",
+    estado: "Activo",
+  },
+  {
+    id: 2,
+    nombre: "María",
+    apellido: "González",
+    razonSocial: "Agro Sur SA",
+    cuit: "30-98765432-1",
+    email: "maria@agrosur.com",
+    telefono: "+54 9 11 8765-4321",
+    estado: "Activo",
+  },
+  {
+    id: 3,
+    nombre: "Carlos",
+    apellido: "Rodríguez",
+    razonSocial: "Campo Fértil",
+    cuit: "20-55555555-5",
+    email: "carlos@campofertil.com",
+    telefono: "+54 9 11 5555-5555",
+    estado: "Inactivo",
+  },
+];
+
+const INITIAL_INSUMOS = [
+  {
+    id: 1,
+    nombre: "Urea 46%",
+    tipo: "Fertilizante",
+    principioActivo: "Nitrógeno",
+    composicion: "N: 46%",
+    dosis: "100-200 kg/ha",
+    precio: 450,
+    stock: 5000,
+    unidad: "kg",
+  },
+  {
+    id: 2,
+    nombre: "Fosfato Diamónico",
+    tipo: "Fertilizante",
+    principioActivo: "Fósforo",
+    composicion: "N: 18%, P: 46%",
+    dosis: "80-150 kg/ha",
+    precio: 520,
+    stock: 3500,
+    unidad: "kg",
+  },
+  {
+    id: 3,
+    nombre: "Glifosato 48%",
+    tipo: "Herbicida",
+    principioActivo: "Glifosato",
+    composicion: "48% p/v",
+    dosis: "2-4 L/ha",
+    precio: 180,
+    stock: 2000,
+    unidad: "L",
+  },
+  {
+    id: 4,
+    nombre: "2,4-D Éster",
+    tipo: "Herbicida",
+    principioActivo: "2,4-D",
+    composicion: "50% p/v",
+    dosis: "1-2 L/ha",
+    precio: 145,
+    stock: 1800,
+    unidad: "L",
+  },
+];
+
+const INITIAL_SEMILLAS = [
+  {
+    id: 1,
+    cultivo: "Soja",
+    nombre: "DM 4670",
+    ciclo: "Corto",
+    densidadBaja: 280000,
+    densidadMedia: 320000,
+    densidadAlta: 360000,
+    precio: 85,
+    stock: 500,
+    unidad: "bolsa",
+    kgPorBolsa: 40,
+  },
+  {
+    id: 2,
+    cultivo: "Maíz",
+    nombre: "AX 7851",
+    ciclo: "Largo",
+    densidadBaja: 65000,
+    densidadMedia: 75000,
+    densidadAlta: 85000,
+    precio: 420,
+    stock: 300,
+    unidad: "bolsa",
+    kgPorBolsa: 20,
+  },
+  {
+    id: 3,
+    cultivo: "Trigo",
+    nombre: "Baguette 31",
+    ciclo: "Intermedio",
+    densidadBaja: 120,
+    densidadMedia: 140,
+    densidadAlta: 160,
+    precio: 38,
+    stock: 800,
+    unidad: "kg",
+  },
+];
+
+const INITIAL_LOTES = [
+  {
+    id: 1,
+    nombre: "Lote Norte",
+    campana: "Soja 2025/26",
+    superficie: 45.8,
+    estado: "Planificación generada",
+    color: "#10b981",
+    analisisSuelo: { ph: 6.2, mo: 3.1, p: 18, n: 45 },
+    napas: 2.5,
+    malezas: [
+      { nombre: "Yuyo Colorado", presente: true },
+      { nombre: "Rama Negra", presente: false },
+      { nombre: "Sorgo de Alepo", presente: true },
+    ],
+    enso: "Niña",
+    planificacion: null,
+  },
+  {
+    id: 2,
+    nombre: "Lote Sur",
+    campana: "Maíz 2025/26",
+    superficie: 62.3,
+    estado: "Datos incompletos",
+    color: "#f59e0b",
+    analisisSuelo: null,
+    napas: null,
+    malezas: [],
+    enso: "Niña",
+    planificacion: null,
+  },
+  {
+    id: 3,
+    nombre: "Potrero Este",
+    campana: "Trigo 2025/26",
+    superficie: 38.5,
+    estado: "Listo para planificar",
+    color: "#3b82f6",
+    analisisSuelo: { ph: 6.5, mo: 2.8, p: 22, n: 38 },
+    napas: 3.2,
+    malezas: [
+      { nombre: "Yuyo Colorado", presente: false },
+      { nombre: "Rama Negra", presente: true },
+      { nombre: "Sorgo de Alepo", presente: false },
+    ],
+    enso: "Niña",
+    planificacion: null,
+  },
+];
+
+// ============================================================================
+// MOTOR DE RECOMENDACIONES - Lógica agronómica simplificada
+// ============================================================================
+
+const calcularRecomendacion = function (lote, cultivo, rendimientoObjetivo, insumos, semillas) {
+  // Ajuste ENSO
+  const ajusteENSO = lote.enso === "Niño" ? 1.05 : lote.enso === "Niña" ? 0.95 : 1.0;
+  const rendimientoAjustado = rendimientoObjetivo * ajusteENSO;
+
+  // Requerimientos nutricionales por cultivo (kg/ha por tonelada de rendimiento)
+  const requerimientos = {
+    soja: { n: 80, p: 20, k: 20 },
+    maiz: { n: 25, p: 10, k: 25 },
+    trigo: { n: 30, p: 12, k: 20 },
+  };
+
+  const req = requerimientos[cultivo] || requerimientos.soja;
+
+  // Calcular necesidades totales (Requerimiento para rendimiento objetivo - Aporte del suelo)
+  const rendimientoTonHa = rendimientoAjustado / 1000;
+  const necesidadN = Math.max(0, req.n * rendimientoTonHa - (lote.analisisSuelo?.n || 0));
+  const necesidadP = Math.max(0, req.p * rendimientoTonHa - (lote.analisisSuelo?.p || 0) * 0.5);
+
+  // Seleccionar fertilizantes del catálogo
+  const urea = insumos.find(function (i) {
+    return i.nombre.includes("Urea");
+  });
+  const fosfato = insumos.find(function (i) {
+    return i.nombre.includes("Fosfato");
+  });
+
+  const fertilizantesRec = [];
+
+  if (urea && necesidadN > 0) {
+    const cantidadHa = Math.ceil(necesidadN / 0.46);
+    const cantidadTotal = Math.ceil(cantidadHa * lote.superficie);
+    fertilizantesRec.push({
+      nombre: urea.nombre,
+      cantidadHa: cantidadHa,
+      cantidadTotal: cantidadTotal,
+      precio: cantidadTotal * urea.precio,
+      stock: urea.stock,
+      unidad: urea.unidad,
+    });
+  }
+
+  if (fosfato && necesidadP > 0) {
+    const cantidadHa = Math.ceil(necesidadP / 0.46);
+    const cantidadTotal = Math.ceil(cantidadHa * lote.superficie);
+    fertilizantesRec.push({
+      nombre: fosfato.nombre,
+      cantidadHa: cantidadHa,
+      cantidadTotal: cantidadTotal,
+      precio: cantidadTotal * fosfato.precio,
+      stock: fosfato.stock,
+      unidad: fosfato.unidad,
+    });
+  }
+
+  // Seleccionar semillas
+  const semillasRec = [];
+  const semillaMatch = semillas.find(function (s) {
+    return s.cultivo.toLowerCase() === cultivo;
+  });
+
+  if (semillaMatch) {
+    let densidad = semillaMatch.densidadMedia * ajusteENSO;
+
+    // Para soja/maíz: calcular bolsas. Para trigo: kg directo
+    let cantidadTotal, unidadFinal;
+    if (cultivo === "soja" || cultivo === "maiz") {
+      const plantasTotales = densidad * lote.superficie;
+      const bolsasNecesarias = Math.ceil(plantasTotales / (semillaMatch.kgPorBolsa * 1000));
+      cantidadTotal = bolsasNecesarias;
+      unidadFinal = "bolsas";
+    } else {
+      // Trigo: kg/ha
+      cantidadTotal = Math.ceil(densidad * lote.superficie);
+      unidadFinal = "kg";
+    }
+
+    semillasRec.push({
+      nombre: semillaMatch.nombre,
+      densidad: Math.round(densidad),
+      cantidadTotal: cantidadTotal,
+      precio: cantidadTotal * semillaMatch.precio,
+      stock: semillaMatch.stock,
+      unidad: unidadFinal,
+    });
+  }
+
+  // Seleccionar herbicidas según malezas
+  const herbicidasRec = [];
+  const malezasPresentes = lote.malezas.filter(function (m) {
+    return m.presente;
+  });
+
+  if (malezasPresentes.length > 0) {
+    const glifosato = insumos.find(function (i) {
+      return i.nombre.includes("Glifosato");
+    });
+    if (glifosato) {
+      const cantidadHa = 3;
+      const cantidadTotal = cantidadHa * lote.superficie;
+      herbicidasRec.push({
+        nombre: glifosato.nombre,
+        cantidadHa: cantidadHa,
+        cantidadTotal: Math.ceil(cantidadTotal),
+        precio: Math.ceil(cantidadTotal * glifosato.precio),
+        stock: glifosato.stock,
+        unidad: glifosato.unidad,
+      });
+    }
+
+    const ramaNegraPresente = malezasPresentes.find(function (m) {
+      return m.nombre === "Rama Negra";
+    });
+    if (ramaNegraPresente) {
+      const producto24D = insumos.find(function (i) {
+        return i.nombre.includes("2,4-D");
+      });
+      if (producto24D) {
+        const cantidadHa = 1.5;
+        const cantidadTotal = cantidadHa * lote.superficie;
+        herbicidasRec.push({
+          nombre: producto24D.nombre,
+          cantidadHa: cantidadHa,
+          cantidadTotal: Math.ceil(cantidadTotal),
+          precio: Math.ceil(cantidadTotal * producto24D.precio),
+          stock: producto24D.stock,
+          unidad: producto24D.unidad,
+        });
+      }
+    }
+  }
+
+  const costoTotal =
+    fertilizantesRec.reduce(function (sum, f) { return sum + f.precio; }, 0) +
+    semillasRec.reduce(function (sum, s) { return sum + s.precio; }, 0) +
+    herbicidasRec.reduce(function (sum, h) { return sum + h.precio; }, 0);
+
+  return {
+    fertilizantes: fertilizantesRec,
+    semillas: semillasRec,
+    herbicidas: herbicidasRec,
+    costoTotal: costoTotal,
+    rendimientoEsperado: Math.round(rendimientoAjustado),
+    ajusteENSO: ajusteENSO,
+  };
+};
+
+// ============================================================================
+// UTILIDADES
+// ============================================================================
+
+const generateNDVIHistory = function () {
+  const years = ["2020", "2021", "2022", "2023", "2024"];
+  return years.map(function (year) {
+    return {
+      year: year,
+      ndvi: 0.45 + Math.random() * 0.35,
+      min: 0.3 + Math.random() * 0.2,
+      max: 0.65 + Math.random() * 0.25,
+    };
+  });
+};
+
+const addLog = function (logs, tipo, usuario, detalle) {
+  const newLog = {
+    id: Date.now(),
+    fecha: new Date().toLocaleString("es-AR"),
+    tipo: tipo,
+    usuario: usuario,
+    detalle: detalle,
+  };
+  return [newLog].concat(logs);
+};
+
+// ============================================================================
+// COMPONENTES UI
+// ============================================================================
+
+const SimpleMap = function ({ lotes, selectedLote, onSelectLote }) {
+  return (
+    <div className="relative w-full h-96 bg-gray-100 rounded-lg overflow-hidden">
+      <img
+        src="https://tile.openstreetmap.org/12/2048/2560.png"
+        alt="Map background"
+        className="absolute inset-0 w-full h-full object-cover opacity-50"
+      />
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative w-full h-full max-w-4xl mx-auto p-8">
+          {lotes.map(function (lote, idx) {
+            return (
+              <div
+                key={lote.id}
+                className="absolute w-32 h-32 rounded-lg border-4 transition-all hover:scale-110 cursor-pointer"
+                style={{
+                  borderColor: lote.color,
+                  backgroundColor: lote.color + "30",
+                  left: 20 + idx * 30 + "%",
+                  top: 30 + idx * 15 + "%",
+                  transform:
+                    selectedLote && selectedLote.id === lote.id
+                      ? "scale(1.1)"
+                      : "scale(1)",
+                  boxShadow:
+                    selectedLote && selectedLote.id === lote.id
+                      ? "0 0 20px " + lote.color
+                      : "none",
+                }}
+                onClick={function () {
+                  onSelectLote(lote);
+                }}
+              >
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
+                  <div className="bg-white rounded px-2 py-1 shadow-lg">
+                    <p className="font-bold text-sm">{lote.nombre}</p>
+                    <p className="text-xs text-gray-600">
+                      {lote.superficie} ha
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-lg">
+        <p className="text-xs font-semibold mb-2">Leyenda:</p>
+        {lotes.map(function (lote) {
+          return (
+            <div key={lote.id} className="flex items-center gap-2 text-xs mb-1">
+              <div
+                className="w-4 h-4 rounded"
+                style={{ backgroundColor: lote.color }}
+              ></div>
+              <span>{lote.nombre}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="absolute top-4 right-4 bg-white p-2 rounded-lg shadow-lg text-xs">
+        <p className="font-semibold">Vista de Campo</p>
+        <p className="text-gray-600">Buenos Aires, AR</p>
+      </div>
+    </div>
+  );
+};
+
+const CreateLoteModal = function ({ onClose, onCreate, existingLotes }) {
+  const [nombre, setNombre] = useState("");
+  const [superficie, setSuperficie] = useState("");
+  const [campana, setCampana] = useState("");
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  const handleCreate = function () {
+    setIsDrawing(true);
+    setTimeout(function () {
+      const newLote = {
+        id: Date.now(),
+        nombre: nombre || "Lote " + (existingLotes.length + 1),
+        campana: campana || "Campaña 2025/26",
+        superficie:
+          parseFloat(superficie) || Math.round(Math.random() * 50 + 30),
+        estado: "Datos incompletos",
+        color: "#" + Math.floor(Math.random() * 16777215).toString(16),
+        analisisSuelo: null,
+        napas: null,
+        malezas: [
+          { nombre: "Yuyo Colorado", presente: false },
+          { nombre: "Rama Negra", presente: false },
+          { nombre: "Sorgo de Alepo", presente: false },
+        ],
+        enso: "Niña",
+        planificacion: null,
+      };
+      onCreate(newLote);
+      setIsDrawing(false);
+    }, 1500);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4">
+        <h2 className="text-2xl font-bold mb-6">Crear Nuevo Lote</h2>
+
+        {isDrawing ? (
+          <div className="py-12 text-center">
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-green-500 border-t-transparent mb-4"></div>
+            <p className="text-lg font-semibold text-gray-700">
+              Dibujando polígono en el mapa...
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Calculando área y generando geometría
+            </p>
+          </div>
+        ) : (
+          <>
+            <div className="space-y-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre del Lote
+                </label>
+                <input
+                  type="text"
+                  value={nombre}
+                  onChange={function (e) {
+                    setNombre(e.target.value);
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  placeholder="Ej: Lote Norte"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Campaña
+                </label>
+                <input
+                  type="text"
+                  value={campana}
+                  onChange={function (e) {
+                    setCampana(e.target.value);
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  placeholder="Ej: Soja 2025/26"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Superficie Estimada (hectáreas)
+                </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  value={superficie}
+                  onChange={function (e) {
+                    setSuperficie(e.target.value);
+                  }}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  placeholder="Ej: 45.8"
+                />
+              </div>
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-4 mb-6">
+              <div className="flex items-start">
+                <svg
+                  className="w-5 h-5 text-blue-600 mt-0.5 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div className="text-sm text-gray-700">
+                  <p className="font-semibold mb-1">Simulación de Dibujo</p>
+                  <p>
+                    En la versión final, podrás dibujar el polígono directamente
+                    sobre el mapa interactivo. El sistema calculará
+                    automáticamente el área en hectáreas.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={onClose}
+                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleCreate}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+              >
+                Crear Lote
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GEELayersPanel = function ({ lote, onClose }) {
+  const [showDEM, setShowDEM] = useState(true);
+  const [showNDVI, setShowNDVI] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [ndviHistory] = useState(generateNDVIHistory());
+
+  React.useEffect(
+    function () {
+      const timer = setTimeout(function () {
+        setLoading(false);
+      }, 1200);
+      return function () {
+        clearTimeout(timer);
+      };
+    },
+    [lote.id]
+  );
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+        <div className="bg-white rounded-2xl p-8 max-w-md">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-4 border-green-500 border-t-transparent mb-4"></div>
+            <p className="text-lg font-semibold text-gray-700">
+              Consultando Google Earth Engine...
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Procesando capas DEM y NDVI histórico
+            </p>
+            <div className="mt-4 w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-green-600 h-2 rounded-full animate-pulse"
+                style={{ width: "70%" }}
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed right-0 top-16 bottom-0 w-96 bg-white shadow-2xl z-40 overflow-y-auto">
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">{lote.nombre}</h3>
+            <p className="text-sm text-gray-600">{lote.superficie} hectáreas</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div className="mb-6 p-3 bg-green-50 border-l-4 border-green-500 rounded">
+          <p className="text-sm font-semibold text-green-800">
+            Capas GEE Activas
+          </p>
+          <p className="text-xs text-green-700 mt-1">
+            DEM y NDVI cargados correctamente
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          <div>
+            <h4 className="font-semibold mb-3 flex items-center">
+              <span className="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+              Modelo Digital de Elevación (DEM)
+            </h4>
+            <div className="bg-gradient-to-b from-amber-900 via-yellow-700 to-green-800 rounded-lg h-48 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-30">
+                {[0, 1, 2, 3, 4, 5, 6, 7].map(function (i) {
+                  return (
+                    <div
+                      key={i}
+                      className="h-6 border-t border-white"
+                      style={{ marginTop: i * 24 + "px" }}
+                    ></div>
+                  );
+                })}
+              </div>
+              <div className="absolute bottom-3 left-3 bg-white bg-opacity-90 p-2 rounded text-xs">
+                <p className="font-semibold">Elevación</p>
+                <p>Min: 85m | Max: 142m</p>
+              </div>
+            </div>
+            <label className="flex items-center mt-3">
+              <input
+                type="checkbox"
+                checked={showDEM}
+                onChange={function (e) {
+                  setShowDEM(e.target.checked);
+                }}
+                className="w-4 h-4 text-green-600 rounded"
+              />
+              <span className="ml-2 text-sm">Mostrar capa DEM en mapa</span>
+            </label>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-3 flex items-center">
+              <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+              NDVI Histórico (5 años)
+            </h4>
+            <div className="bg-gradient-to-br from-yellow-600 via-green-500 to-green-700 rounded-lg h-48 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-40">
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(function (i) {
+                  return (
+                    <div
+                      key={i}
+                      className="absolute rounded-full bg-green-900"
+                      style={{
+                        width: Math.random() * 40 + 20 + "px",
+                        height: Math.random() * 40 + 20 + "px",
+                        left: Math.random() * 80 + 10 + "%",
+                        top: Math.random() * 80 + 10 + "%",
+                      }}
+                    ></div>
+                  );
+                })}
+              </div>
+              <div className="absolute bottom-3 left-3 bg-white bg-opacity-90 p-2 rounded text-xs">
+                <p className="font-semibold">Índice NDVI</p>
+                <p>Promedio: 0.68 (Saludable)</p>
+              </div>
+            </div>
+            <label className="flex items-center mt-3">
+              <input
+                type="checkbox"
+                checked={showNDVI}
+                onChange={function (e) {
+                  setShowNDVI(e.target.checked);
+                }}
+                className="w-4 h-4 text-green-600 rounded"
+              />
+              <span className="ml-2 text-sm">Mostrar capa NDVI en mapa</span>
+            </label>
+          </div>
+
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h4 className="font-semibold mb-3">Tendencia NDVI (2020-2024)</h4>
+            <ResponsiveContainer width="100%" height={120}>
+              <AreaChart data={ndviHistory}>
+                <defs>
+                  <linearGradient id="ndviGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="year" tick={{ fontSize: 10 }} />
+                <YAxis domain={[0, 1]} tick={{ fontSize: 10 }} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="ndvi"
+                  stroke="#10b981"
+                  fill="url(#ndviGradient)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+            <div className="mt-3 grid grid-cols-3 gap-2 text-xs text-gray-600">
+              <div>
+                <p className="font-semibold">Mínimo</p>
+                <p>
+                  {Math.min
+                    .apply(
+                      null,
+                      ndviHistory.map(function (d) {
+                        return d.ndvi;
+                      })
+                    )
+                    .toFixed(2)}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold">Promedio</p>
+                <p>
+                  {(
+                    ndviHistory.reduce(function (a, b) {
+                      return a + b.ndvi;
+                    }, 0) / ndviHistory.length
+                  ).toFixed(2)}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold">Máximo</p>
+                <p>
+                  {Math.max
+                    .apply(
+                      null,
+                      ndviHistory.map(function (d) {
+                        return d.ndvi;
+                      })
+                    )
+                    .toFixed(2)}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg p-4 text-sm text-gray-700">
+            <p className="font-semibold mb-2">Fuente de Datos</p>
+            <p className="text-xs">Google Earth Engine</p>
+            <p className="text-xs text-gray-600 mt-1">
+              DEM: SRTM 30m | NDVI: Sentinel-2 L2A
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              Última actualización: {new Date().toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LoginScreen = function ({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = function () {
+    const user = Object.values(MOCK_USERS).find(function (u) {
+      return u.email === email && u.password === password;
+    });
+    if (user) {
+      onLogin(user);
+    } else {
+      alert(
+        "Credenciales inválidas. Usa: admin@acre.com / admin o productor@campo.com / prod"
+      );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-green-600 text-white p-4 rounded-full mb-4">
+            <svg
+              className="w-12 h-12"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-800">ACRE Platform</h1>
+          <p className="text-gray-600 mt-2">
+            Análisis y Recomendaciones para Cultivos Eficientes
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={function (e) {
+                setEmail(e.target.value);
+              }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="usuario@ejemplo.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={function (e) {
+                setPassword(e.target.value);
+              }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              placeholder="••••••••"
+              onKeyPress={function (e) {
+                if (e.key === "Enter") handleLogin();
+              }}
+            />
+          </div>
+
+          <button
+            onClick={handleLogin}
+            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+          >
+            Ingresar
+          </button>
+        </div>
+
+        <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
+          <p className="font-semibold mb-2">Demo Credentials:</p>
+          <p>Admin: admin@acre.com / admin</p>
+          <p>Productor: productor@campo.com / prod</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// COMPONENTE PRINCIPAL
+// ============================================================================
+
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [clientes, setClientes] = useState(INITIAL_CLIENTES);
+  const [insumos, setInsumos] = useState(INITIAL_INSUMOS);
+  const [semillas, setSemillas] = useState(INITIAL_SEMILLAS);
+  const [lotes, setLotes] = useState(INITIAL_LOTES);
+  const [logs, setLogs] = useState([]);
+
+  const handleLogin = function (userData) {
+    setUser(userData);
+    setLogs(addLog(logs, "Login", userData.name, "Inicio de sesión exitoso"));
+  };
+
+  if (!user) {
+    return <LoginScreen onLogin={handleLogin} />;
+  }
+
+  if (user.role === "admin") {
+    return (
+      <AdminPanel
+        onLogout={function () {
+          setUser(null);
+        }}
+        user={user}
+        clientes={clientes}
+        setClientes={setClientes}
+        insumos={insumos}
+        setInsumos={setInsumos}
+        semillas={semillas}
+        setSemillas={setSemillas}
+        logs={logs}
+        setLogs={setLogs}
+      />
+    );
+  }
+
+  return (
+    <ProductorDashboard
+      onLogout={function () {
+        setUser(null);
+      }}
+      user={user}
+      lotes={lotes}
+      setLotes={setLotes}
+      insumos={insumos}
+      semillas={semillas}
+      logs={logs}
+      setLogs={setLogs}
+    />
+  );
+}
+
+// ============================================================================
+// WIZARD DE PLANIFICACIÓN
+// ============================================================================
+
+const WizardPlanificacion = function ({
+  lote,
+  step,
+  onStepChange,
+  onComplete,
+  onCancel,
+}) {
+  const [cultivo, setCultivo] = useState("");
+  const [fechaSiembra, setFechaSiembra] = useState("");
+  const [rendimientoObjetivo, setRendimientoObjetivo] = useState("");
+
+  const handleComplete = function () {
+    onComplete({
+      cultivo: cultivo,
+      fechaSiembra: fechaSiembra,
+      rendimientoObjetivo: parseInt(rendimientoObjetivo),
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-lg mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16">
+            <button
+              onClick={onCancel}
+              className="mr-4 text-gray-600 hover:text-gray-800"
+            >
+              ← Cancelar
+            </button>
+            <span className="text-2xl font-bold text-green-600">
+              Asistente de Planificación
+            </span>
+            <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            {[1, 2, 3].map(function (s) {
+              return (
+                <div key={s} className="flex items-center">
+                  <div
+                    className={
+                      "w-12 h-12 rounded-full flex items-center justify-center font-bold " +
+                      (step >= s
+                        ? "bg-green-600 text-white"
+                        : "bg-gray-300 text-gray-600")
+                    }
+                  >
+                    {s}
+                  </div>
+                  {s < 3 && (
+                    <div
+                      className={
+                        "w-32 h-1 mx-2 " +
+                        (step > s ? "bg-green-600" : "bg-gray-300")
+                      }
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex justify-between mt-2">
+            <span className="text-sm text-gray-600">Datos del Lote</span>
+            <span className="text-sm text-gray-600">Cultivo y Objetivo</span>
+            <span className="text-sm text-gray-600">Confirmación</span>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-8">
+          {step === 1 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">
+                Paso 1: Datos del Lote
+              </h2>
+              <div className="space-y-4">
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Lote</p>
+                      <p className="font-semibold">{lote.nombre}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Campaña</p>
+                      <p className="font-semibold">{lote.campana}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Superficie</p>
+                      <p className="font-semibold">{lote.superficie} ha</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Estado ENSO</p>
+                      <p className="font-semibold text-blue-600">{lote.enso}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {lote.analisisSuelo && (
+                  <div className="p-4 bg-green-50 rounded-lg">
+                    <h3 className="font-semibold mb-2">Análisis de Suelo</h3>
+                    <div className="grid grid-cols-4 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-600">pH</p>
+                        <p className="font-semibold">{lote.analisisSuelo.ph}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">MO %</p>
+                        <p className="font-semibold">{lote.analisisSuelo.mo}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">P (ppm)</p>
+                        <p className="font-semibold">{lote.analisisSuelo.p}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">N (kg/ha)</p>
+                        <p className="font-semibold">{lote.analisisSuelo.n}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <button
+                  onClick={function () {
+                    onStepChange(2);
+                  }}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">
+                Paso 2: Selección de Cultivo y Objetivo
+              </h2>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Cultivo
+                  </label>
+                  <select
+                    value={cultivo}
+                    onChange={function (e) {
+                      setCultivo(e.target.value);
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  >
+                    <option value="">Seleccione un cultivo</option>
+                    <option value="soja">Soja</option>
+                    <option value="maiz">Maíz</option>
+                    <option value="trigo">Trigo</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Fecha de Siembra Objetivo
+                  </label>
+                  <input
+                    type="date"
+                    value={fechaSiembra}
+                    onChange={function (e) {
+                      setFechaSiembra(e.target.value);
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Rendimiento Objetivo (kg/ha)
+                  </label>
+                  <input
+                    type="number"
+                    value={rendimientoObjetivo}
+                    onChange={function (e) {
+                      setRendimientoObjetivo(e.target.value);
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    placeholder="3800"
+                  />
+                  <p className="mt-2 text-sm text-gray-600">
+                    Sugerido: 3500-4500 kg/ha para soja (ajustado por ENSO:{" "}
+                    {lote.enso})
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <button
+                  onClick={function () {
+                    onStepChange(1);
+                  }}
+                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  ← Anterior
+                </button>
+                <button
+                  onClick={function () {
+                    onStepChange(3);
+                  }}
+                  disabled={!cultivo || !fechaSiembra || !rendimientoObjetivo}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          )}
+
+          {step === 3 && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Paso 3: Confirmación</h2>
+
+              <div className="space-y-4">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <h3 className="font-semibold mb-3">
+                    Resumen de Planificación
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Lote:</span>
+                      <span className="font-semibold">{lote.nombre}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Superficie:</span>
+                      <span className="font-semibold">
+                        {lote.superficie} ha
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Cultivo:</span>
+                      <span className="font-semibold capitalize">
+                        {cultivo}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Fecha Siembra:</span>
+                      <span className="font-semibold">{fechaSiembra}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">
+                        Rendimiento Objetivo:
+                      </span>
+                      <span className="font-semibold">
+                        {rendimientoObjetivo} kg/ha
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Estado ENSO:</span>
+                      <span className="font-semibold text-blue-600">
+                        {lote.enso} ({lote.enso === "Niña" ? "-5%" : lote.enso === "Niño" ? "+5%" : "0%"} ajuste)
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <p className="text-sm text-gray-700">
+                    Al confirmar, el sistema generará una recomendación
+                    personalizada de insumos (fertilizantes, semillas y
+                    herbicidas) basándose en:
+                  </p>
+                  <ul className="mt-2 text-sm text-gray-700 list-disc list-inside space-y-1">
+                    <li>Análisis de suelo del lote</li>
+                    <li>Requerimientos nutricionales del cultivo</li>
+                    <li>Ajustes por condición ENSO ({lote.enso})</li>
+                    <li>Catálogo de productos disponibles</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-between">
+                <button
+                  onClick={function () {
+                    onStepChange(2);
+                  }}
+                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  ← Anterior
+                </button>
+                <button
+                  onClick={handleComplete}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  Generar Recomendación
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// CARGA DE DATOS
+// ============================================================================
+
+const CargaDatos = function ({ lote, onBack, onComplete }) {
+  const [tab, setTab] = useState("suelo");
+  const [suelo, setSuelo] = useState(
+    lote.analisisSuelo || {
+      ph: "",
+      mo: "",
+      p: "",
+      n: "",
+    }
+  );
+  const [napas, setNapas] = useState(lote.napas || "");
+  const [malezas, setMalezas] = useState(
+    lote.malezas.length > 0
+      ? lote.malezas
+      : [
+          { nombre: "Yuyo Colorado", presente: false },
+          { nombre: "Rama Negra", presente: false },
+          { nombre: "Sorgo de Alepo", presente: false },
+        ]
+  );
+
+  const handleSave = function () {
+    onComplete({
+      analisisSuelo: {
+        ph: parseFloat(suelo.ph),
+        mo: parseFloat(suelo.mo),
+        p: parseFloat(suelo.p),
+        n: parseFloat(suelo.n),
+      },
+      napas: parseFloat(napas),
+      malezas: malezas,
+    });
+  };
+
+  const isValid =
+    suelo.ph && suelo.mo && suelo.p && suelo.n && napas;
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-lg mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16">
+            <button
+              onClick={onBack}
+              className="mr-4 text-gray-600 hover:text-gray-800"
+            >
+              ← Volver
+            </button>
+            <span className="text-2xl font-bold text-green-600">
+              Centro de Carga de Datos
+            </span>
+            <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-lg shadow">
+          <div className="flex border-b">
+            <button
+              onClick={function () {
+                setTab("suelo");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "suelo"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Análisis de Suelo
+            </button>
+            <button
+              onClick={function () {
+                setTab("malezas");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "malezas"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Mapas de Malezas
+            </button>
+            <button
+              onClick={function () {
+                setTab("napas");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "napas"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Napas Freáticas
+            </button>
+          </div>
+
+          <div className="p-8">
+            {tab === "suelo" && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Análisis de Suelo</h2>
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      pH
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={suelo.ph}
+                      onChange={function (e) {
+                        setSuelo({
+                          ph: e.target.value,
+                          mo: suelo.mo,
+                          p: suelo.p,
+                          n: suelo.n,
+                        });
+                      }}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      placeholder="6.5"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Materia Orgánica (%)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={suelo.mo}
+                      onChange={function (e) {
+                        setSuelo({
+                          ph: suelo.ph,
+                          mo: e.target.value,
+                          p: suelo.p,
+                          n: suelo.n,
+                        });
+                      }}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      placeholder="3.2"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Fósforo (ppm)
+                    </label>
+                    <input
+                      type="number"
+                      value={suelo.p}
+                      onChange={function (e) {
+                        setSuelo({
+                          ph: suelo.ph,
+                          mo: suelo.mo,
+                          p: e.target.value,
+                          n: suelo.n,
+                        });
+                      }}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      placeholder="18"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nitrógeno (kg/ha)
+                    </label>
+                    <input
+                      type="number"
+                      value={suelo.n}
+                      onChange={function (e) {
+                        setSuelo({
+                          ph: suelo.ph,
+                          mo: suelo.mo,
+                          p: suelo.p,
+                          n: e.target.value,
+                        });
+                      }}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                      placeholder="45"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-gray-700">
+                    <strong>Nota:</strong> Los valores ingresados se utilizarán
+                    para calcular las necesidades de fertilización del lote.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {tab === "malezas" && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">Mapa de Malezas</h2>
+                <p className="text-gray-600 mb-6">
+                  Seleccione las malezas presentes en el lote:
+                </p>
+
+                <div className="space-y-4">
+                  {malezas.map(function (maleza, idx) {
+                    return (
+                      <label
+                        key={idx}
+                        className="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={maleza.presente}
+                          onChange={function (e) {
+                            const newMalezas = malezas.slice();
+                            newMalezas[idx] = {
+                              nombre: maleza.nombre,
+                              presente: e.target.checked,
+                            };
+                            setMalezas(newMalezas);
+                          }}
+                          className="w-5 h-5 text-green-600 rounded focus:ring-green-500"
+                        />
+                        <span className="ml-3 text-lg">{maleza.nombre}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-6 p-4 bg-yellow-50 rounded-lg">
+                  <p className="text-sm text-gray-700">
+                    <strong>Versión Post-MVP:</strong> Podrás subir archivos
+                    Shapefile o dibujar zonas directamente en el mapa.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {tab === "napas" && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">
+                  Profundidad de Napas Freáticas
+                </h2>
+                <div className="max-w-md">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Profundidad estimada (metros)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={napas}
+                    onChange={function (e) {
+                      setNapas(e.target.value);
+                    }}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    placeholder="2.5"
+                  />
+                  <p className="mt-2 text-sm text-gray-600">
+                    Este dato ayuda a evaluar riesgos de encharcamiento y
+                    estrategias de drenaje.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-8 flex justify-end space-x-4">
+              <button
+                onClick={onBack}
+                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleSave}
+                disabled={!isValid}
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              >
+                Guardar Datos
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// REPORTE DE RECOMENDACIÓN - NUEVO COMPONENTE
+// ============================================================================
+
+const ReporteRecomendacion = function ({ lote, onBack }) {
+  if (!lote.planificacion) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-600">No hay planificación generada</p>
+          <button
+            onClick={onBack}
+            className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            Volver al Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const rec = lote.planificacion.recomendacion;
+
+  const handleExportPDF = function () {
+    alert("Funcionalidad de exportación PDF en desarrollo. En versión completa se generará un PDF descargable.");
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-lg mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <button
+                onClick={onBack}
+                className="mr-4 text-gray-600 hover:text-gray-800"
+              >
+                ← Volver
+              </button>
+              <span className="text-2xl font-bold text-green-600">
+                Reporte de Planificación
+              </span>
+              <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+            </div>
+            <button
+              onClick={handleExportPDF}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              Exportar PDF
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Información del Lote */}
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
+          <h2 className="text-2xl font-bold mb-4">Información del Lote</h2>
+          <div className="grid grid-cols-3 gap-6">
+            <div>
+              <p className="text-sm text-gray-600">Lote</p>
+              <p className="font-semibold text-lg">{lote.nombre}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Campaña</p>
+              <p className="font-semibold text-lg">{lote.campana}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Superficie</p>
+              <p className="font-semibold text-lg">{lote.superficie} ha</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Cultivo</p>
+              <p className="font-semibold text-lg capitalize">
+                {lote.planificacion.cultivo}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Fecha de Siembra</p>
+              <p className="font-semibold text-lg">
+                {lote.planificacion.fechaSiembra}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-600">Estado ENSO</p>
+              <p className="font-semibold text-lg text-blue-600">
+                {lote.enso} ({(rec.ajusteENSO - 1) * 100 > 0 ? "+" : ""}{((rec.ajusteENSO - 1) * 100).toFixed(0)}%)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Rendimiento Esperado */}
+        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow p-6 mb-6">
+          <div className="text-center">
+            <p className="text-lg mb-2">Rendimiento Esperado</p>
+            <p className="text-5xl font-bold">{rec.rendimientoEsperado} kg/ha</p>
+            <p className="text-sm mt-2 opacity-90">
+              (Ajustado por condición ENSO: {lote.enso})
+            </p>
+          </div>
+        </div>
+
+        {/* Fertilizantes */}
+        {rec.fertilizantes.length > 0 && (
+          <div className="bg-white rounded-lg shadow p-6 mb-6">
+            <h3 className="text-xl font-bold mb-4 flex items-center">
+              <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+              Fertilizantes
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Producto
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Dosis/ha
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Cantidad Total
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Stock
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Precio Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {rec.fertilizantes.map(function (f, idx) {
+                    return (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-sm font-medium">
+                          {f.nombre}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          {f.cantidadHa} {f.unidad}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          {f.cantidadTotal} {f.unidad}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          <span
+                            className={
+                              f.cantidadTotal <= f.stock
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {f.stock} {f.unidad}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          ${f.precio.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Semillas */}
+        {rec.semillas.length > 0 && (
+          <div className="bg-white rounded-lg shadow p-6 mb-6">
+            <h3 className="text-xl font-bold mb-4 flex items-center">
+              <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+              Semillas
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Variedad
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Densidad
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Cantidad
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Stock
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Precio Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {rec.semillas.map(function (s, idx) {
+                    return (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-sm font-medium">
+                          {s.nombre}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          {s.densidad.toLocaleString()} pl/ha
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          {s.cantidadTotal} {s.unidad}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          <span
+                            className={
+                              s.cantidadTotal <= s.stock
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {s.stock} {s.unidad}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          ${s.precio.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Herbicidas */}
+        {rec.herbicidas.length > 0 && (
+          <div className="bg-white rounded-lg shadow p-6 mb-6">
+            <h3 className="text-xl font-bold mb-4 flex items-center">
+              <span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+              Herbicidas
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
+                      Producto
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Dosis/ha
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Cantidad Total
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Stock
+                    </th>
+                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                      Precio Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {rec.herbicidas.map(function (h, idx) {
+                    return (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-sm font-medium">
+                          {h.nombre}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          {h.cantidadHa} {h.unidad}/ha
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          {h.cantidadTotal} {h.unidad}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right">
+                          <span
+                            className={
+                              h.cantidadTotal <= h.stock
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }
+                          >
+                            {h.stock} {h.unidad}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-right font-semibold">
+                          ${h.precio.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Costo Total */}
+        <div className="bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg shadow p-8 mb-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-lg mb-2">Costo Total de Insumos</p>
+              <p className="text-5xl font-bold">
+                ${rec.costoTotal.toLocaleString()}
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm opacity-90">Costo por hectárea</p>
+              <p className="text-2xl font-semibold">
+                ${Math.round(rec.costoTotal / lote.superficie).toLocaleString()}/ha
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Notas */}
+        <div className="bg-blue-50 rounded-lg p-6 mb-8">
+          <h3 className="font-semibold text-gray-800 mb-3">Notas Importantes</h3>
+          <ul className="text-sm text-gray-700 space-y-2">
+            <li>• Las cantidades recomendadas están basadas en el análisis de suelo y los requerimientos del cultivo.</li>
+            <li>• El ajuste ENSO ({lote.enso}) ha sido aplicado al rendimiento objetivo y densidad de siembra.</li>
+            <li>• Verificar disponibilidad de stock antes de confirmar la compra.</li>
+            <li>• Los precios mostrados son estimados y pueden variar según disponibilidad.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// DASHBOARD PRODUCTOR
+// ============================================================================
+
+const ProductorDashboard = function ({
+  onLogout,
+  user,
+  lotes,
+  setLotes,
+  insumos,
+  semillas,
+  logs,
+  setLogs,
+}) {
+  const [view, setView] = useState("dashboard");
+  const [selectedLote, setSelectedLote] = useState(null);
+  const [wizardStep, setWizardStep] = useState(1);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showGEEPanel, setShowGEEPanel] = useState(false);
+
+  const handleCreateLote = function (newLote) {
+    setLotes([].concat(lotes, [newLote]));
+    setSelectedLote(newLote);
+    setShowCreateModal(false);
+    setShowGEEPanel(true);
+    setLogs(
+      addLog(
+        logs,
+        "Lote Creado",
+        user.name,
+        'Lote "' + newLote.nombre + '" - ' + newLote.superficie + " ha"
+      )
+    );
+  };
+
+  const handleSelectLote = function (lote) {
+    setSelectedLote(lote);
+    setShowGEEPanel(true);
+  };
+
+  const handleCompleteCargaDatos = function (datos) {
+    const updatedLotes = lotes.map(function (l) {
+      if (l.id === selectedLote.id) {
+        return {
+          id: l.id,
+          nombre: l.nombre,
+          campana: l.campana,
+          superficie: l.superficie,
+          estado: "Listo para planificar",
+          color: l.color,
+          analisisSuelo: datos.analisisSuelo,
+          napas: datos.napas,
+          malezas: datos.malezas,
+          enso: l.enso,
+          planificacion: l.planificacion,
+        };
+      }
+      return l;
+    });
+    setLotes(updatedLotes);
+    setLogs(
+      addLog(
+        logs,
+        "Datos Cargados",
+        user.name,
+        'Datos completados para "' + selectedLote.nombre + '"'
+      )
+    );
+    setView("dashboard");
+  };
+
+  const handleCompleteWizard = function (planData) {
+    const lote = lotes.find(function (l) {
+      return l.id === selectedLote.id;
+    });
+    const recomendacion = calcularRecomendacion(
+      lote,
+      planData.cultivo,
+      planData.rendimientoObjetivo,
+      insumos,
+      semillas
+    );
+
+    const updatedLotes = lotes.map(function (l) {
+      if (l.id === selectedLote.id) {
+        return {
+          id: l.id,
+          nombre: l.nombre,
+          campana: l.campana,
+          superficie: l.superficie,
+          estado: "Planificación generada",
+          color: l.color,
+          analisisSuelo: l.analisisSuelo,
+          napas: l.napas,
+          malezas: l.malezas,
+          enso: l.enso,
+          planificacion: {
+            cultivo: planData.cultivo,
+            fechaSiembra: planData.fechaSiembra,
+            rendimientoObjetivo: planData.rendimientoObjetivo,
+            recomendacion: recomendacion,
+          },
+        };
+      }
+      return l;
+    });
+    setLotes(updatedLotes);
+    setLogs(
+      addLog(
+        logs,
+        "Recomendación",
+        user.name,
+        'Planificación generada para "' + selectedLote.nombre + '"'
+      )
+    );
+    setView("dashboard");
+    setWizardStep(1);
+  };
+
+  // Routing
+  if (view === "reporte" && selectedLote) {
+    const loteActual = lotes.find(function (l) {
+      return l.id === selectedLote.id;
+    });
+    return (
+      <ReporteRecomendacion
+        lote={loteActual}
+        onBack={function () {
+          setView("dashboard");
+        }}
+      />
+    );
+  }
+
+  if (view === "wizard" && selectedLote) {
+    return (
+      <WizardPlanificacion
+        lote={selectedLote}
+        step={wizardStep}
+        onStepChange={setWizardStep}
+        onComplete={handleCompleteWizard}
+        onCancel={function () {
+          setView("dashboard");
+          setWizardStep(1);
+        }}
+      />
+    );
+  }
+
+  if (view === "carga-datos" && selectedLote) {
+    return (
+      <CargaDatos
+        lote={selectedLote}
+        onBack={function () {
+          setView("dashboard");
+        }}
+        onComplete={handleCompleteCargaDatos}
+      />
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-green-600">ACRE</span>
+              <span className="ml-2 text-gray-600">Platform</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-600">{user.name}</span>
+              <button
+                onClick={onLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Salir
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+          <div className="mt-2 flex items-center space-x-2">
+            <span className="text-sm text-gray-600">Estado ENSO actual:</span>
+            <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
+              La Niña
+            </span>
+            <span className="text-xs text-gray-500">
+              (Ajuste: -5% densidad siembra)
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Total Lotes</p>
+                <p className="text-3xl font-bold text-gray-800">
+                  {lotes.length}
+                </p>
+              </div>
+              <div className="bg-green-100 p-4 rounded-full">
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 0119.553-.724L15 7m0 13V7m0 0l6-3"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Superficie Total</p>
+                <p className="text-3xl font-bold text-gray-800">
+                  {lotes
+                    .reduce(function (sum, l) {
+                      return sum + l.superficie;
+                    }, 0)
+                    .toFixed(1)}{" "}
+                  ha
+                </p>
+              </div>
+              <div className="bg-blue-100 p-4 rounded-full">
+                <svg
+                  className="w-8 h-8 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 text-sm">Planificaciones Activas</p>
+                <p className="text-3xl font-bold text-gray-800">
+                  {
+                    lotes.filter(function (l) {
+                      return l.estado === "Planificación generada";
+                    }).length
+                  }
+                </p>
+              </div>
+              <div className="bg-yellow-100 p-4 rounded-full">
+                <svg
+                  className="w-8 h-8 text-yellow-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="p-6 border-b">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Mis Lotes</h2>
+              <button
+                onClick={function () {
+                  setShowCreateModal(true);
+                }}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                Crear Lote
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {lotes.map(function (lote) {
+                return (
+                  <div
+                    key={lote.id}
+                    className="border rounded-lg p-4 hover:shadow-lg transition-shadow"
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="font-bold text-lg text-gray-800">
+                          {lote.nombre}
+                        </h3>
+                        <p className="text-sm text-gray-600">{lote.campana}</p>
+                      </div>
+                      <span
+                        className={
+                          "px-2 py-1 text-xs rounded-full " +
+                          (lote.estado === "Planificación generada"
+                            ? "bg-green-100 text-green-800"
+                            : lote.estado === "Listo para planificar"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-yellow-100 text-yellow-800")
+                        }
+                      >
+                        {lote.estado}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Superficie:</span>
+                        <span className="font-semibold">
+                          {lote.superficie} ha
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">
+                          Análisis de suelo:
+                        </span>
+                        <span
+                          className={
+                            lote.analisisSuelo
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }
+                        >
+                          {lote.analisisSuelo ? "✓ Completo" : "✗ Pendiente"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={function () {
+                          handleSelectLote(lote);
+                        }}
+                        className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700 flex items-center justify-center gap-1"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945"
+                          />
+                        </svg>
+                        Ver Capas
+                      </button>
+                      {lote.estado === "Datos incompletos" && (
+                        <button
+                          onClick={function () {
+                            setSelectedLote(lote);
+                            setView("carga-datos");
+                          }}
+                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                        >
+                          Cargar Datos
+                        </button>
+                      )}
+                      {lote.estado === "Listo para planificar" && (
+                        <button
+                          onClick={function () {
+                            setSelectedLote(lote);
+                            setView("wizard");
+                          }}
+                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                        >
+                          Planificar
+                        </button>
+                      )}
+                      {lote.estado === "Planificación generada" && (
+                        <button
+                          onClick={function () {
+                            setSelectedLote(lote);
+                            setView("reporte");
+                          }}
+                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                        >
+                          Ver Reporte
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-2xl font-bold mb-4">Mapa de Lotes</h2>
+          <SimpleMap
+            lotes={lotes}
+            selectedLote={selectedLote}
+            onSelectLote={handleSelectLote}
+          />
+        </div>
+      </div>
+
+      {showCreateModal && (
+        <CreateLoteModal
+          onClose={function () {
+            setShowCreateModal(false);
+          }}
+          onCreate={handleCreateLote}
+          existingLotes={lotes}
+        />
+      )}
+
+      {showGEEPanel && selectedLote && (
+        <GEELayersPanel
+          lote={selectedLote}
+          onClose={function () {
+            setShowGEEPanel(false);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// ============================================================================
+// PANEL DE ADMINISTRACIÓN - NUEVO COMPONENTE
+// ============================================================================
+
+const AdminPanel = function ({
+  onLogout,
+  user,
+  clientes,
+  setClientes,
+  insumos,
+  setInsumos,
+  semillas,
+  setSemillas,
+  logs,
+}) {
+  const [tab, setTab] = useState("clientes");
+  const [editingItem, setEditingItem] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+
+  // CRUD Clientes
+  const handleAddCliente = function (cliente) {
+    setClientes([].concat(clientes, [{ ...cliente, id: Date.now() }]));
+    setShowAddModal(false);
+  };
+
+  const handleDeleteCliente = function (id) {
+    if (window.confirm("¿Confirma eliminar este cliente?")) {
+      setClientes(
+        clientes.filter(function (c) {
+          return c.id !== id;
+        })
+      );
+    }
+  };
+
+  // CRUD Insumos
+  const handleAddInsumo = function (insumo) {
+    setInsumos([].concat(insumos, [{ ...insumo, id: Date.now() }]));
+    setShowAddModal(false);
+  };
+
+  const handleDeleteInsumo = function (id) {
+    if (window.confirm("¿Confirma eliminar este insumo?")) {
+      setInsumos(
+        insumos.filter(function (i) {
+          return i.id !== id;
+        })
+      );
+    }
+  };
+
+  // CRUD Semillas
+  const handleAddSemilla = function (semilla) {
+    setSemillas([].concat(semillas, [{ ...semilla, id: Date.now() }]));
+    setShowAddModal(false);
+  };
+
+  const handleDeleteSemilla = function (id) {
+    if (window.confirm("¿Confirma eliminar esta semilla?")) {
+      setSemillas(
+        semillas.filter(function (s) {
+          return s.id !== id;
+        })
+      );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-green-600">
+                ACRE Admin
+              </span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-600">{user.name}</span>
+              <button
+                onClick={onLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-3xl font-bold mb-8">Panel de Administración</h1>
+
+        <div className="bg-white rounded-lg shadow">
+          <div className="flex border-b">
+            <button
+              onClick={function () {
+                setTab("clientes");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "clientes"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Clientes
+            </button>
+            <button
+              onClick={function () {
+                setTab("insumos");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "insumos"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Insumos
+            </button>
+            <button
+              onClick={function () {
+                setTab("semillas");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "semillas"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Semillas
+            </button>
+            <button
+              onClick={function () {
+                setTab("logs");
+              }}
+              className={
+                "px-6 py-4 font-semibold " +
+                (tab === "logs"
+                  ? "border-b-2 border-green-600 text-green-600"
+                  : "text-gray-600")
+              }
+            >
+              Logs del Sistema
+            </button>
+          </div>
+
+          <div className="p-6">
+            {tab === "clientes" && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold">Gestión de Clientes</h2>
+                  <button
+                    onClick={function () {
+                      setShowAddModal(true);
+                    }}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  >
+                    + Nuevo Cliente
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Nombre
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Razón Social
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          CUIT
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Email
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Estado
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {clientes.map(function (c) {
+                        return (
+                          <tr key={c.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 text-sm">
+                              {c.nombre} {c.apellido}
+                            </td>
+                            <td className="px-4 py-3 text-sm">
+                              {c.razonSocial}
+                            </td>
+                            <td className="px-4 py-3 text-sm">{c.cuit}</td>
+                            <td className="px-4 py-3 text-sm">{c.email}</td>
+                            <td className="px-4 py-3 text-sm">
+                              <span
+                                className={
+                                  c.estado === "Activo"
+                                    ? "px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs"
+                                    : "px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs"
+                                }
+                              >
+                                {c.estado}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-sm">
+                              <button
+                                onClick={function () {
+                                  handleDeleteCliente(c.id);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                              >
+                                Eliminar
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {tab === "insumos" && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold">Catálogo de Insumos</h2>
+                  <button
+                    onClick={function () {
+                      setShowAddModal(true);
+                    }}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  >
+                    + Nuevo Insumo
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Nombre
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Tipo
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Composición
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Precio
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Stock
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {insumos.map(function (i) {
+                        return (
+                          <tr key={i.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 text-sm font-medium">
+                              {i.nombre}
+                            </td>
+                            <td className="px-4 py-3 text-sm">{i.tipo}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {i.composicion}
+                            </td>
+                            <td className="px-4 py-3 text-sm">${i.precio}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {i.stock} {i.unidad}
+                            </td>
+                            <td className="px-4 py-3 text-sm">
+                              <button
+                                onClick={function () {
+                                  handleDeleteInsumo(i.id);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                              >
+                                Eliminar
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {tab === "semillas" && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold">Catálogo de Semillas</h2>
+                  <button
+                    onClick={function () {
+                      setShowAddModal(true);
+                    }}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  >
+                    + Nueva Semilla
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Cultivo
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Variedad
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Ciclo
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Densidad Media
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Precio
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Stock
+                        </th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">
+                          Acciones
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {semillas.map(function (s) {
+                        return (
+                          <tr key={s.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3 text-sm font-medium">
+                              {s.cultivo}
+                            </td>
+                            <td className="px-4 py-3 text-sm">{s.nombre}</td>
+                            <td className="px-4 py-3 text-sm">{s.ciclo}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {s.densidadMedia.toLocaleString()} pl/ha
+                            </td>
+                            <td className="px-4 py-3 text-sm">${s.precio}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {s.stock} {s.unidad}
+                            </td>
+                            <td className="px-4 py-3 text-sm">
+                              <button
+                                onClick={function () {
+                                  handleDeleteSemilla(s.id);
+                                }}
+                                className="text-red-600 hover:text-red-800"
+                              >
+                                Eliminar
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {tab === "logs" && (
+              <div>
+                <h2 className="text-2xl font-bold mb-6">
+                  Logs del Sistema
+                </h2>
+                <div className="space-y-2">
+                  {logs.length === 0 ? (
+                    <p className="text-gray-500 text-center py-8">
+                      No hay logs registrados aún
+                    </p>
+                  ) : (
+                    logs.map(function (log) {
+                      return (
+                        <div
+                          key={log.id}
+                          className="p-4 border rounded-lg hover:bg-gray-50"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span
+                                  className={
+                                    "px-2 py-1 text-xs rounded-full " +
+                                    (log.tipo === "Error"
+                                      ? "bg-red-100 text-red-800"
+                                      : log.tipo === "Login"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-green-100 text-green-800")
+                                  }
+                                >
+                                  {log.tipo}
+                                </span>
+                                <span className="text-sm text-gray-600">
+                                  {log.usuario}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-800">
+                                {log.detalle}
+                              </p>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {log.fecha}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold mb-4">
+              Funcionalidad en Desarrollo
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Los formularios de creación de {tab} estarán disponibles en la versión
+              completa del MVP.
+            </p>
+            <button
+              onClick={function () {
+                setShowAddModal(false);
+              }}
+              className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
