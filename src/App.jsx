@@ -1079,120 +1079,187 @@ const WizardPlanificacion = function ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
+      {/* Professional Navbar */}
+      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-2xl border-b-4 border-green-900 mb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16">
-            <button
-              onClick={onCancel}
-              className="mr-4 text-gray-600 hover:text-gray-800"
-            >
-              ← Cancelar
-            </button>
-            <span className="text-2xl font-bold text-green-600">
-              Asistente de Planificación
-            </span>
-            <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={onCancel}
+                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 backdrop-blur-sm flex items-center space-x-2"
+              >
+                <span>←</span>
+                <span>Cancelar</span>
+              </button>
+              <div className="border-l border-white border-opacity-30 pl-4 h-12 flex flex-col justify-center">
+                <p className="text-green-200 text-xs font-semibold uppercase tracking-wide">Asistente de Planificación</p>
+                <p className="text-white text-xl font-bold">{lote.nombre}</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="text-right mr-2">
+                <p className="text-green-200 text-xs font-semibold uppercase">Superficie</p>
+                <p className="text-white text-lg font-bold">{lote.superficie} ha</p>
+              </div>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Professional Progress Stepper */}
+        <div className="mb-10">
           <div className="flex items-center justify-between">
             {[1, 2, 3].map(function (s) {
+              const stepLabels = ["Datos del Lote", "Cultivo y Objetivo", "Confirmación"];
+              const stepIcons = ["🌱", "📊", "✓"];
               return (
-                <div key={s} className="flex items-center">
-                  <div
-                    className={
-                      "w-12 h-12 rounded-full flex items-center justify-center font-bold " +
-                      (step >= s
-                        ? "bg-green-600 text-white"
-                        : "bg-gray-300 text-gray-600")
-                    }
-                  >
-                    {s}
-                  </div>
-                  {s < 3 && (
+                <div key={s} className="flex items-center flex-1">
+                  <div className="flex flex-col items-center flex-1">
                     <div
                       className={
-                        "w-32 h-1 mx-2 " +
-                        (step > s ? "bg-green-600" : "bg-gray-300")
+                        "w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl shadow-lg transition-all duration-300 " +
+                        (step >= s
+                          ? "bg-gradient-to-br from-green-600 to-green-700 text-white scale-110 shadow-2xl"
+                          : "bg-white border-4 border-gray-300 text-gray-400")
                       }
-                    />
+                    >
+                      {step > s ? "✓" : stepIcons[s - 1]}
+                    </div>
+                    <p className={"mt-3 text-sm font-semibold " + (step >= s ? "text-green-700" : "text-gray-500")}>
+                      Paso {s}
+                    </p>
+                    <p className={"text-xs " + (step >= s ? "text-green-600" : "text-gray-400")}>
+                      {stepLabels[s - 1]}
+                    </p>
+                  </div>
+                  {s < 3 && (
+                    <div className="flex-1 mx-4 mb-8">
+                      <div
+                        className={
+                          "h-2 rounded-full transition-all duration-500 " +
+                          (step > s ? "bg-gradient-to-r from-green-600 to-green-700" : "bg-gray-300")
+                        }
+                      />
+                    </div>
                   )}
                 </div>
               );
             })}
           </div>
-          <div className="flex justify-between mt-2">
-            <span className="text-sm text-gray-600">Datos del Lote</span>
-            <span className="text-sm text-gray-600">Cultivo y Objetivo</span>
-            <span className="text-sm text-gray-600">Confirmación</span>
-          </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-8">
+        <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
           {step === 1 && (
             <div>
-              <h2 className="text-2xl font-bold mb-6">
-                Paso 1: Datos del Lote
-              </h2>
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="grid grid-cols-2 gap-4">
+              {/* Step Header */}
+              <div className="bg-gradient-to-r from-green-600 to-green-700 p-8 text-white">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-green-100 text-sm font-semibold uppercase">Paso 1 de 3</p>
+                    <h2 className="text-3xl font-bold">Datos del Lote</h2>
+                  </div>
+                </div>
+                <p className="text-green-100 mt-2">Revisión de información técnica y condiciones del lote</p>
+              </div>
+
+              <div className="p-8 space-y-6">
+                {/* Información General del Lote */}
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-600 shadow-lg">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">INFO</span>
+                    Información General
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div>
-                      <p className="text-sm text-gray-600">Lote</p>
-                      <p className="font-semibold">{lote.nombre}</p>
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Lote</p>
+                      <p className="text-xl font-bold text-gray-800">{lote.nombre}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Campaña</p>
-                      <p className="font-semibold">{lote.campana}</p>
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Campaña</p>
+                      <p className="text-xl font-bold text-gray-800">{lote.campana}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Superficie</p>
-                      <p className="font-semibold">{lote.superficie} ha</p>
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Superficie</p>
+                      <p className="text-xl font-bold text-green-600">{lote.superficie} <span className="text-sm">ha</span></p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">Estado ENSO</p>
-                      <p className="font-semibold text-blue-600">{lote.enso}</p>
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Estado ENSO</p>
+                      <div className="flex items-center">
+                        <div className="bg-blue-100 px-3 py-1 rounded-lg">
+                          <p className="font-bold text-blue-700">{lote.enso}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
+                {/* Análisis de Suelo */}
                 {lote.analisisSuelo && (
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <h3 className="font-semibold mb-2">Análisis de Suelo</h3>
-                    <div className="grid grid-cols-4 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-600">pH</p>
-                        <p className="font-semibold">{lote.analisisSuelo.ph}</p>
+                  <div className="bg-gradient-to-br from-amber-50 to-white rounded-xl p-6 border-l-4 border-amber-500 shadow-lg">
+                    <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                      <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">SUELO</span>
+                      Análisis de Suelo Disponible
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                      <div className="bg-white rounded-lg p-4 shadow">
+                        <p className="text-xs text-gray-500 uppercase font-semibold mb-2">pH del Suelo</p>
+                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.ph}</p>
+                        <p className="text-xs text-gray-500 mt-1">Unidades pH</p>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-600">MO %</p>
-                        <p className="font-semibold">{lote.analisisSuelo.mo}</p>
+                      <div className="bg-white rounded-lg p-4 shadow">
+                        <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Materia Orgánica</p>
+                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.mo}<span className="text-lg">%</span></p>
+                        <p className="text-xs text-gray-500 mt-1">Porcentaje</p>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-600">P (ppm)</p>
-                        <p className="font-semibold">{lote.analisisSuelo.p}</p>
+                      <div className="bg-white rounded-lg p-4 shadow">
+                        <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Fósforo (P)</p>
+                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.p}</p>
+                        <p className="text-xs text-gray-500 mt-1">ppm</p>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-600">N (kg/ha)</p>
-                        <p className="font-semibold">{lote.analisisSuelo.n}</p>
+                      <div className="bg-white rounded-lg p-4 shadow">
+                        <p className="text-xs text-gray-500 uppercase font-semibold mb-2">Nitrógeno (N)</p>
+                        <p className="text-3xl font-bold text-gray-800">{lote.analisisSuelo.n}</p>
+                        <p className="text-xs text-gray-500 mt-1">kg/ha</p>
                       </div>
                     </div>
                   </div>
                 )}
+
+                {/* Nota informativa */}
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-blue-500 text-white p-2 rounded-lg mt-1">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-blue-900 mb-1">Información Clave</p>
+                      <p className="text-sm text-blue-800">
+                        Esta información será utilizada para generar recomendaciones personalizadas de fertilización y manejo del cultivo.
+                        El ajuste ENSO <strong>{lote.enso}</strong> influirá en las dosis recomendadas.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-8 flex justify-end">
+              <div className="bg-gray-50 px-8 py-6 flex justify-end border-t-2 border-gray-200">
                 <button
                   onClick={function () {
                     onStepChange(2);
                   }}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-bold shadow-lg flex items-center space-x-2 transition-all duration-200"
                 >
-                  Siguiente →
+                  <span>Siguiente</span>
+                  <span>→</span>
                 </button>
               </div>
             </div>
@@ -1200,31 +1267,48 @@ const WizardPlanificacion = function ({
 
           {step === 2 && (
             <div>
-              <h2 className="text-2xl font-bold mb-6">
-                Paso 2: Selección de Cultivo y Objetivo
-              </h2>
+              {/* Step Header */}
+              <div className="bg-gradient-to-r from-green-600 to-green-700 p-8 text-white">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-green-100 text-sm font-semibold uppercase">Paso 2 de 3</p>
+                    <h2 className="text-3xl font-bold">Selección de Cultivo y Objetivo</h2>
+                  </div>
+                </div>
+                <p className="text-green-100 mt-2">Configure los parámetros agronómicos de la planificación</p>
+              </div>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cultivo
+              <div className="p-8 space-y-6">
+                {/* Cultivo Selection */}
+                <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-600 shadow-lg">
+                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
+                    Cultivo a Planificar
                   </label>
                   <select
                     value={cultivo}
                     onChange={function (e) {
                       setCultivo(e.target.value);
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg font-semibold transition-all"
                   >
-                    <option value="">Seleccione un cultivo</option>
-                    <option value="soja">Soja</option>
-                    <option value="maiz">Maíz</option>
-                    <option value="trigo">Trigo</option>
+                    <option value="">-- Seleccione un cultivo --</option>
+                    <option value="soja">🌱 Soja</option>
+                    <option value="maiz">🌽 Maíz</option>
+                    <option value="trigo">🌾 Trigo</option>
                   </select>
+                  <p className="mt-2 text-xs text-gray-500">
+                    El cultivo seleccionado determinará los requerimientos nutricionales base
+                  </p>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Fecha de Siembra */}
+                <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border-l-4 border-blue-500 shadow-lg">
+                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
                     Fecha de Siembra Objetivo
                   </label>
                   <input
@@ -1233,47 +1317,87 @@ const WizardPlanificacion = function ({
                     onChange={function (e) {
                       setFechaSiembra(e.target.value);
                     }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg font-semibold transition-all"
                   />
+                  <p className="mt-2 text-xs text-gray-500">
+                    La fecha de siembra afectará la ventana de aplicación de insumos
+                  </p>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                {/* Rendimiento Objetivo */}
+                <div className="bg-gradient-to-br from-amber-50 to-white rounded-xl p-6 border-l-4 border-amber-500 shadow-lg">
+                  <label className="block text-sm font-bold text-gray-800 uppercase mb-3">
                     Rendimiento Objetivo (kg/ha)
                   </label>
-                  <input
-                    type="number"
-                    value={rendimientoObjetivo}
-                    onChange={function (e) {
-                      setRendimientoObjetivo(e.target.value);
-                    }}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
-                    placeholder="3800"
-                  />
-                  <p className="mt-2 text-sm text-gray-600">
-                    Sugerido: 3500-4500 kg/ha para soja (ajustado por ENSO:{" "}
-                    {lote.enso})
-                  </p>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={rendimientoObjetivo}
+                      onChange={function (e) {
+                        setRendimientoObjetivo(e.target.value);
+                      }}
+                      className="w-full px-5 py-4 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-lg font-semibold transition-all"
+                      placeholder="3800"
+                    />
+                    <span className="absolute right-5 top-4 text-gray-500 font-semibold">kg/ha</span>
+                  </div>
+                  <div className="mt-4 bg-amber-100 border border-amber-300 rounded-lg p-4">
+                    <p className="text-sm text-amber-900 font-semibold mb-1">📊 Rangos Sugeridos (ajustado por ENSO: {lote.enso})</p>
+                    <div className="grid grid-cols-3 gap-3 mt-2 text-xs">
+                      <div className="bg-white rounded p-2 text-center">
+                        <p className="font-bold text-gray-700">Soja</p>
+                        <p className="text-green-600 font-semibold">3500-4500</p>
+                      </div>
+                      <div className="bg-white rounded p-2 text-center">
+                        <p className="font-bold text-gray-700">Maíz</p>
+                        <p className="text-green-600 font-semibold">8000-12000</p>
+                      </div>
+                      <div className="bg-white rounded p-2 text-center">
+                        <p className="font-bold text-gray-700">Trigo</p>
+                        <p className="text-green-600 font-semibold">3000-5000</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ENSO Impact Notice */}
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-blue-500 text-white p-2 rounded-lg mt-1">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-blue-900 mb-1">Ajuste Climático ENSO</p>
+                      <p className="text-sm text-blue-800">
+                        Condición actual: <strong>{lote.enso}</strong> ({lote.enso === "Niña" ? "-5%" : lote.enso === "Niño" ? "+5%" : "0%"} en rendimiento base).
+                        Las recomendaciones de insumos se ajustarán automáticamente según esta condición.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-between">
+              <div className="bg-gray-50 px-8 py-6 flex justify-between border-t-2 border-gray-200">
                 <button
                   onClick={function () {
                     onStepChange(1);
                   }}
-                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-8 py-3 border-2 border-gray-300 rounded-lg hover:bg-white font-bold flex items-center space-x-2 transition-all duration-200"
                 >
-                  ← Anterior
+                  <span>←</span>
+                  <span>Anterior</span>
                 </button>
                 <button
                   onClick={function () {
                     onStepChange(3);
                   }}
                   disabled={!cultivo || !fechaSiembra || !rendimientoObjetivo}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-bold shadow-lg flex items-center space-x-2 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-200"
                 >
-                  Siguiente →
+                  <span>Siguiente</span>
+                  <span>→</span>
                 </button>
               </div>
             </div>
@@ -1281,80 +1405,172 @@ const WizardPlanificacion = function ({
 
           {step === 3 && (
             <div>
-              <h2 className="text-2xl font-bold mb-6">Paso 3: Confirmación</h2>
+              {/* Step Header */}
+              <div className="bg-gradient-to-r from-green-600 to-green-700 p-8 text-white">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="bg-white bg-opacity-20 p-3 rounded-lg">
+                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-green-100 text-sm font-semibold uppercase">Paso 3 de 3</p>
+                    <h2 className="text-3xl font-bold">Confirmación y Generación</h2>
+                  </div>
+                </div>
+                <p className="text-green-100 mt-2">Revise los datos ingresados antes de generar la recomendación</p>
+              </div>
 
-              <div className="space-y-4">
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <h3 className="font-semibold mb-3">
-                    Resumen de Planificación
+              <div className="p-8 space-y-6">
+                {/* Resumen de Planificación */}
+                <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border-l-4 border-blue-600 shadow-lg">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">RESUMEN</span>
+                    Datos de la Planificación
                   </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Lote:</span>
-                      <span className="font-semibold">{lote.nombre}</span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Lote</p>
+                      <p className="text-xl font-bold text-gray-800">{lote.nombre}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Superficie:</span>
-                      <span className="font-semibold">
-                        {lote.superficie} ha
-                      </span>
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Superficie</p>
+                      <p className="text-xl font-bold text-green-600">{lote.superficie} ha</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Cultivo:</span>
-                      <span className="font-semibold capitalize">
-                        {cultivo}
-                      </span>
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Cultivo</p>
+                      <p className="text-xl font-bold text-gray-800 capitalize">{cultivo}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Fecha Siembra:</span>
-                      <span className="font-semibold">{fechaSiembra}</span>
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Fecha de Siembra</p>
+                      <p className="text-xl font-bold text-gray-800">{fechaSiembra}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        Rendimiento Objetivo:
-                      </span>
-                      <span className="font-semibold">
-                        {rendimientoObjetivo} kg/ha
-                      </span>
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Rendimiento Objetivo</p>
+                      <p className="text-xl font-bold text-gray-800">{rendimientoObjetivo} <span className="text-sm">kg/ha</span></p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Estado ENSO:</span>
-                      <span className="font-semibold text-blue-600">
-                        {lote.enso} ({lote.enso === "Niña" ? "-5%" : lote.enso === "Niño" ? "+5%" : "0%"} ajuste)
-                      </span>
+                    <div className="bg-white rounded-lg p-4 shadow">
+                      <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Condición ENSO</p>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xl font-bold text-blue-700">{lote.enso}</span>
+                        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm font-bold">
+                          {lote.enso === "Niña" ? "-5%" : lote.enso === "Niño" ? "+5%" : "0%"}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-sm text-gray-700">
-                    Al confirmar, el sistema generará una recomendación
-                    personalizada de insumos (fertilizantes, semillas y
-                    herbicidas) basándose en:
-                  </p>
-                  <ul className="mt-2 text-sm text-gray-700 list-disc list-inside space-y-1">
-                    <li>Análisis de suelo del lote</li>
-                    <li>Requerimientos nutricionales del cultivo</li>
-                    <li>Ajustes por condición ENSO ({lote.enso})</li>
-                    <li>Catálogo de productos disponibles</li>
+                {/* Motor Agronómico Info */}
+                <div className="bg-gradient-to-br from-green-50 to-white rounded-xl p-6 border-l-4 border-green-600 shadow-lg">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">MOTOR</span>
+                    El Motor Agronómico Generará
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-white rounded-lg p-5 shadow-md hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="bg-amber-100 p-2 rounded-lg">
+                          <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                          </svg>
+                        </div>
+                        <p className="font-bold text-gray-800">Fertilizantes</p>
+                      </div>
+                      <p className="text-xs text-gray-600">Basado en análisis NPK del suelo</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-5 shadow-md hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="bg-green-100 p-2 rounded-lg">
+                          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                          </svg>
+                        </div>
+                        <p className="font-bold text-gray-800">Semillas</p>
+                      </div>
+                      <p className="text-xs text-gray-600">Según superficie y densidad óptima</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-5 shadow-md hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="bg-red-100 p-2 rounded-lg">
+                          <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                          </svg>
+                        </div>
+                        <p className="font-bold text-gray-800">Herbicidas</p>
+                      </div>
+                      <p className="text-xs text-gray-600">Control de malezas identificadas</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Criterios del Motor */}
+                <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl p-6 border-l-4 border-purple-500 shadow-lg">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                    <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-lg text-sm font-bold mr-3">CRITERIOS</span>
+                    Variables de Cálculo del Motor Agronómico
+                  </h3>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">✓</span>
+                      <span><strong>Análisis de suelo:</strong> pH {lote.analisisSuelo?.ph}, MO {lote.analisisSuelo?.mo}%, P {lote.analisisSuelo?.p} ppm, N {lote.analisisSuelo?.n} kg/ha</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">✓</span>
+                      <span><strong>Requerimientos nutricionales:</strong> Según cultivo {cultivo} para alcanzar {rendimientoObjetivo} kg/ha</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">✓</span>
+                      <span><strong>Ajuste climático ENSO:</strong> Factor {lote.enso === "Niña" ? "0.95" : lote.enso === "Niño" ? "1.05" : "1.0"} aplicado a dosis</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">✓</span>
+                      <span><strong>Disponibilidad de stock:</strong> Verificación en catálogo de productos</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-green-600 font-bold mr-2">✓</span>
+                      <span><strong>Cálculo de costos:</strong> Inversión total y por hectárea según precios vigentes</span>
+                    </li>
                   </ul>
+                </div>
+
+                {/* Warning */}
+                <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-6">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-amber-500 text-white p-2 rounded-lg mt-1">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-bold text-amber-900 mb-1">Recomendación Técnica</p>
+                      <p className="text-sm text-amber-900">
+                        Las recomendaciones generadas son sugerencias técnicas basadas en modelos agronómicos.
+                        Siempre consulte con un profesional agronómico antes de la aplicación en campo.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-8 flex justify-between">
+              <div className="bg-gray-50 px-8 py-6 flex justify-between border-t-2 border-gray-200">
                 <button
                   onClick={function () {
                     onStepChange(2);
                   }}
-                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="px-8 py-3 border-2 border-gray-300 rounded-lg hover:bg-white font-bold flex items-center space-x-2 transition-all duration-200"
                 >
-                  ← Anterior
+                  <span>←</span>
+                  <span>Anterior</span>
                 </button>
                 <button
                   onClick={handleComplete}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  className="px-10 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-bold text-lg shadow-2xl flex items-center space-x-3 transition-all duration-200 transform hover:scale-105"
                 >
-                  Generar Recomendación
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                  <span>Generar Recomendación</span>
                 </button>
               </div>
             </div>
