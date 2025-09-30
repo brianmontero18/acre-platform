@@ -853,76 +853,146 @@ const LoginScreen = function ({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-block bg-green-600 text-white p-4 rounded-full mb-4">
-            <svg
-              className="w-12 h-12"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
+    <div className="min-h-screen bg-gradient-to-br from-emerald-900 via-green-800 to-lime-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Fondo con patrón agrícola */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(255,255,255,0.1) 35px, rgba(255,255,255,0.1) 70px)',
+          backgroundSize: '70px 100%'
+        }}></div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-5xl relative z-10 flex">
+        {/* Panel izquierdo - Información */}
+        <div className="hidden lg:block lg:w-1/2 bg-gradient-to-br from-green-700 to-green-900 p-12 text-white relative">
+          <div className="relative z-10">
+            <div className="flex items-center mb-8">
+              <div className="bg-white bg-opacity-20 p-3 rounded-lg backdrop-blur-sm">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z"/>
+                </svg>
+              </div>
+              <div className="ml-4">
+                <h1 className="text-3xl font-bold">ACRE</h1>
+                <p className="text-green-200 text-sm">Agricultura de Precisión</p>
+              </div>
+            </div>
+
+            <h2 className="text-2xl font-bold mb-4">Tecnología Agronómica Inteligente</h2>
+            <p className="text-green-100 mb-8 leading-relaxed">
+              Plataforma profesional para planificación de cultivos, análisis de suelo y recomendaciones de insumos basadas en datos satelitales y modelos agronómicos.
+            </p>
+
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <div className="bg-white bg-opacity-20 p-2 rounded mt-1">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="font-semibold">Análisis Satelital GEE</p>
+                  <p className="text-sm text-green-200">NDVI histórico y modelos de elevación</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="bg-white bg-opacity-20 p-2 rounded mt-1">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="font-semibold">Integración ENSO</p>
+                  <p className="text-sm text-green-200">Ajustes climáticos del SMN en tiempo real</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="bg-white bg-opacity-20 p-2 rounded mt-1">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="font-semibold">Motor Agronómico</p>
+                  <p className="text-sm text-green-200">Recomendaciones de fertilización y siembra</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Patrón decorativo */}
+          <div className="absolute bottom-0 right-0 w-64 h-64 opacity-10">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <path fill="currentColor" d="M45.3,-57.5C57.9,-49.1,66.6,-33.5,70.4,-16.4C74.2,0.7,73.1,19.3,64.8,33.8C56.5,48.3,40.9,58.7,24.3,63.7C7.7,68.7,-10,68.3,-25.4,62.4C-40.8,56.5,-53.9,45.1,-61.7,30.5C-69.5,15.9,-72,-1.9,-67.3,-17.5C-62.6,-33.1,-50.7,-46.5,-37.1,-54.7C-23.5,-62.9,-8.2,-65.9,5.3,-72.5C18.8,-79.1,32.7,-65.9,45.3,-57.5Z" transform="translate(100 100)"/>
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">ACRE Platform</h1>
-          <p className="text-gray-600 mt-2">
-            Análisis y Recomendaciones para Cultivos Eficientes
-          </p>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={function (e) {
-                setEmail(e.target.value);
-              }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="usuario@ejemplo.com"
-            />
+        {/* Panel derecho - Login */}
+        <div className="w-full lg:w-1/2 p-12">
+          <div className="max-w-md mx-auto">
+            <div className="lg:hidden text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-800 mb-2">ACRE Platform</h1>
+              <p className="text-gray-600 text-sm">Agricultura de Precisión</p>
+            </div>
+
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Iniciar Sesión</h2>
+            <p className="text-gray-600 mb-8">Acceda a su cuenta profesional</p>
+
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={function (e) {
+                    setEmail(e.target.value);
+                  }}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-all"
+                  placeholder="usuario@ejemplo.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Contraseña
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={function (e) {
+                    setPassword(e.target.value);
+                  }}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600 transition-all"
+                  placeholder="••••••••"
+                  onKeyPress={function (e) {
+                    if (e.key === "Enter") handleLogin();
+                  }}
+                />
+              </div>
+
+              <button
+                onClick={handleLogin}
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-3 rounded-lg font-semibold hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Ingresar al Sistema
+              </button>
+            </div>
+
+            <div className="mt-8 p-4 bg-amber-50 border-l-4 border-amber-500 rounded-r">
+              <p className="text-xs font-semibold text-amber-900 mb-2">CREDENCIALES DEMO</p>
+              <div className="text-xs text-amber-800 space-y-1">
+                <p><span className="font-semibold">Admin:</span> admin@acre.com / admin</p>
+                <p><span className="font-semibold">Productor:</span> productor@campo.com / prod</p>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center text-xs text-gray-500">
+              <p>© 2025 ACRE Platform • Versión MVP 1.0</p>
+            </div>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Contraseña
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={function (e) {
-                setPassword(e.target.value);
-              }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="••••••••"
-              onKeyPress={function (e) {
-                if (e.key === "Enter") handleLogin();
-              }}
-            />
-          </div>
-
-          <button
-            onClick={handleLogin}
-            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
-          >
-            Ingresar
-          </button>
-        </div>
-
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
-          <p className="font-semibold mb-2">Demo Credentials:</p>
-          <p>Admin: admin@acre.com / admin</p>
-          <p>Productor: productor@campo.com / prod</p>
         </div>
       </div>
     </div>
@@ -2089,240 +2159,289 @@ const ProductorDashboard = function ({
     );
   }
 
+  const calcularEstadisticas = function () {
+    const superficieTotal = lotes.reduce(function (sum, l) { return sum + l.superficie; }, 0);
+    const lotesConPlan = lotes.filter(function (l) { return l.planificacion; });
+    const costoTotal = lotesConPlan.reduce(function (sum, l) {
+      return sum + (l.planificacion?.recomendacion?.costoTotal || 0);
+    }, 0);
+    const superficiePlanificada = lotesConPlan.reduce(function (sum, l) { return sum + l.superficie; }, 0);
+
+    return {
+      superficieTotal: superficieTotal,
+      lotesConPlan: lotesConPlan.length,
+      costoTotal: costoTotal,
+      superficiePlanificada: superficiePlanificada,
+      costoPorHa: superficiePlanificada > 0 ? costoTotal / superficiePlanificada : 0
+    };
+  };
+
+  const stats = calcularEstadisticas();
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
+      {/* Navbar mejorado */}
+      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-xl border-b-4 border-green-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-20">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-green-600">ACRE</span>
-              <span className="ml-2 text-gray-600">Platform</span>
+              <div className="flex items-center">
+                <div className="bg-white bg-opacity-20 p-2 rounded-lg">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z"/>
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <span className="text-2xl font-bold text-white">ACRE</span>
+                  <p className="text-xs text-green-200">Agricultura de Precisión</p>
+                </div>
+              </div>
+              <div className="ml-8 hidden lg:flex items-center space-x-1">
+                <div className="px-3 py-2 bg-white bg-opacity-10 rounded-lg backdrop-blur-sm">
+                  <p className="text-xs text-green-200">Campaña Activa</p>
+                  <p className="text-sm font-semibold text-white">2025/26</p>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">{user.name}</span>
-              <button
-                onClick={onLogout}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-              >
-                Salir
-              </button>
+            <div className="flex items-center space-x-6">
+              {/* Alerta ENSO prominente */}
+              <div className="hidden md:flex items-center bg-blue-900 bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-lg border border-blue-400">
+                <svg className="w-5 h-5 text-blue-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                </svg>
+                <div>
+                  <p className="text-xs text-blue-200">Estado ENSO</p>
+                  <p className="text-sm font-bold text-white">La Niña (-5%)</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="text-right hidden sm:block">
+                  <p className="text-sm font-semibold text-white">{user.name}</p>
+                  <p className="text-xs text-green-200">Productor</p>
+                </div>
+                <button
+                  onClick={onLogout}
+                  className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg font-medium transition-all backdrop-blur-sm border border-white border-opacity-30"
+                >
+                  Salir
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header mejorado */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-          <div className="mt-2 flex items-center space-x-2">
-            <span className="text-sm text-gray-600">Estado ENSO actual:</span>
-            <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
-              La Niña
-            </span>
-            <span className="text-xs text-gray-500">
-              (Ajuste: -5% densidad siembra)
-            </span>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">Panel de Control</h1>
+              <p className="text-gray-600">Gestión integral de lotes y planificación agronómica</p>
+            </div>
+            <button
+              onClick={function () {
+                setShowCreateModal(true);
+              }}
+              className="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg hover:from-green-700 hover:to-green-800 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all font-semibold"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+              </svg>
+              Nuevo Lote
+            </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Total Lotes</p>
-                <p className="text-3xl font-bold text-gray-800">
-                  {lotes.length}
-                </p>
+        {/* KPIs Agronómicos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Superficie Total */}
+          <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-xl shadow-xl p-6 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -mr-16 -mt-16"></div>
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <div className="bg-white bg-opacity-20 p-3 rounded-lg backdrop-blur-sm">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
               </div>
-              <div className="bg-green-100 p-4 rounded-full">
-                <svg
-                  className="w-8 h-8 text-green-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 0119.553-.724L15 7m0 13V7m0 0l6-3"
-                  />
-                </svg>
-              </div>
+              <p className="text-green-100 text-sm font-medium mb-1">Superficie Total</p>
+              <p className="text-4xl font-bold mb-1">{stats.superficieTotal.toFixed(1)}</p>
+              <p className="text-green-200 text-sm">hectáreas</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Superficie Total</p>
-                <p className="text-3xl font-bold text-gray-800">
-                  {lotes
-                    .reduce(function (sum, l) {
-                      return sum + l.superficie;
-                    }, 0)
-                    .toFixed(1)}{" "}
-                  ha
-                </p>
-              </div>
-              <div className="bg-blue-100 p-4 rounded-full">
-                <svg
-                  className="w-8 h-8 text-blue-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+          {/* Lotes Gestionados */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-600 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 0119.553-.724L15 7m0 13V7m0 0l6-3"/>
                 </svg>
               </div>
             </div>
+            <p className="text-gray-600 text-sm font-semibold mb-1 uppercase tracking-wide">Lotes Gestionados</p>
+            <p className="text-4xl font-bold text-gray-800 mb-1">{lotes.length}</p>
+            <p className="text-sm text-gray-500">{stats.lotesConPlan} con planificación</p>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-600 text-sm">Planificaciones Activas</p>
-                <p className="text-3xl font-bold text-gray-800">
-                  {
-                    lotes.filter(function (l) {
-                      return l.estado === "Planificación generada";
-                    }).length
-                  }
-                </p>
-              </div>
-              <div className="bg-yellow-100 p-4 rounded-full">
-                <svg
-                  className="w-8 h-8 text-yellow-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
+          {/* Inversión Planificada */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-amber-600 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-amber-100 p-3 rounded-lg">
+                <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
+            </div>
+            <p className="text-gray-600 text-sm font-semibold mb-1 uppercase tracking-wide">Inversión Total</p>
+            <p className="text-3xl font-bold text-gray-800 mb-1">${(stats.costoTotal / 1000).toFixed(0)}K</p>
+            <p className="text-sm text-gray-500">${Math.round(stats.costoPorHa)}/ha promedio</p>
+          </div>
+
+          {/* Estado de Avance */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-600 hover:shadow-xl transition-shadow">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+            </div>
+            <p className="text-gray-600 text-sm font-semibold mb-1 uppercase tracking-wide">Avance Campaña</p>
+            <p className="text-4xl font-bold text-gray-800 mb-1">{lotes.length > 0 ? Math.round((stats.lotesConPlan / lotes.length) * 100) : 0}%</p>
+            <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+              <div className="bg-purple-600 h-2 rounded-full transition-all" style={{width: lotes.length > 0 ? ((stats.lotesConPlan / lotes.length) * 100) + '%' : '0%'}}></div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow mb-8">
-          <div className="p-6 border-b">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Mis Lotes</h2>
-              <button
-                onClick={function () {
-                  setShowCreateModal(true);
-                }}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
-                Crear Lote
-              </button>
-            </div>
+        {/* Listado de Lotes Mejorado */}
+        <div className="bg-white rounded-xl shadow-lg mb-8 border-t-4 border-green-600">
+          <div className="p-6 border-b bg-gradient-to-r from-gray-50 to-white">
+            <h2 className="text-2xl font-bold text-gray-800 mb-1 flex items-center">
+              <svg className="w-7 h-7 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 0119.553-.724L15 7m0 13V7m0 0l6-3"/>
+              </svg>
+              Lotes en Gestión
+            </h2>
+            <p className="text-gray-600 text-sm">Gestión y seguimiento de lotes productivos</p>
           </div>
 
           <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {lotes.map(function (lote) {
+                const cultivo = lote.planificacion?.cultivo || '';
+                const costoTotal = lote.planificacion?.recomendacion?.costoTotal || 0;
+                const costoHa = lote.superficie > 0 ? costoTotal / lote.superficie : 0;
+
                 return (
                   <div
                     key={lote.id}
-                    className="border rounded-lg p-4 hover:shadow-lg transition-shadow"
+                    className="border-2 border-gray-200 rounded-xl p-5 hover:shadow-2xl hover:border-green-400 transition-all duration-300 bg-white relative overflow-hidden group"
                   >
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <h3 className="font-bold text-lg text-gray-800">
+                    {/* Indicador de color lateral */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 transition-all group-hover:w-2" style={{backgroundColor: lote.color}}></div>
+
+                    <div className="flex justify-between items-start mb-4 pl-3">
+                      <div className="flex-1">
+                        <h3 className="font-bold text-xl text-gray-800 mb-1">
                           {lote.nombre}
                         </h3>
-                        <p className="text-sm text-gray-600">{lote.campana}</p>
+                        <p className="text-sm text-gray-500 flex items-center">
+                          <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                          </svg>
+                          {lote.campana}
+                        </p>
                       </div>
                       <span
                         className={
-                          "px-2 py-1 text-xs rounded-full " +
+                          "px-3 py-1.5 text-xs font-bold rounded-full border-2 " +
                           (lote.estado === "Planificación generada"
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-green-50 text-green-700 border-green-300"
                             : lote.estado === "Listo para planificar"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-yellow-100 text-yellow-800")
+                            ? "bg-blue-50 text-blue-700 border-blue-300"
+                            : "bg-amber-50 text-amber-700 border-amber-300")
                         }
                       >
-                        {lote.estado}
+                        {lote.estado === "Planificación generada" ? "✓ Planificado" :
+                         lote.estado === "Listo para planificar" ? "→ Listo" : "⚠ Incompleto"}
                       </span>
                     </div>
 
-                    <div className="space-y-2 mb-4">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Superficie:</span>
-                        <span className="font-semibold">
-                          {lote.superficie} ha
-                        </span>
+                    {/* Datos técnicos */}
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 mb-4 border border-gray-200">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Superficie</p>
+                          <p className="text-lg font-bold text-gray-800">{lote.superficie} <span className="text-sm text-gray-600">ha</span></p>
+                        </div>
+                        {cultivo && (
+                          <div>
+                            <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Cultivo</p>
+                            <p className="text-lg font-bold text-green-700 capitalize">{cultivo}</p>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">
-                          Análisis de suelo:
+
+                      {costoTotal > 0 && (
+                        <div className="mt-3 pt-3 border-t border-gray-300">
+                          <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Inversión</p>
+                          <div className="flex justify-between items-end">
+                            <p className="text-lg font-bold text-amber-600">${(costoTotal/1000).toFixed(1)}K</p>
+                            <p className="text-xs text-gray-600">${Math.round(costoHa)}/ha</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Indicadores de estado */}
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600 flex items-center">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                          </svg>
+                          Análisis de Suelo
                         </span>
-                        <span
-                          className={
-                            lote.analisisSuelo
-                              ? "text-green-600"
-                              : "text-red-600"
-                          }
-                        >
+                        <span className={lote.analisisSuelo ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
                           {lote.analisisSuelo ? "✓ Completo" : "✗ Pendiente"}
                         </span>
                       </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-600 flex items-center">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                          </svg>
+                          Condición ENSO
+                        </span>
+                        <span className="text-blue-700 font-bold">{lote.enso}</span>
+                      </div>
                     </div>
 
+                    {/* Acciones */}
                     <div className="flex gap-2">
                       <button
                         onClick={function () {
                           handleSelectLote(lote);
                         }}
-                        className="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700 flex items-center justify-center gap-1"
+                        className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center border border-gray-300"
+                        title="Ver capas GEE"
                       >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945"
-                          />
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 0119.553-.724L15 7m0 13V7m0 0l6-3"/>
                         </svg>
-                        Ver Capas
                       </button>
+
                       {lote.estado === "Datos incompletos" && (
                         <button
                           onClick={function () {
                             setSelectedLote(lote);
                             setView("carga-datos");
                           }}
-                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700"
+                          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg"
                         >
                           Cargar Datos
                         </button>
@@ -2333,9 +2452,9 @@ const ProductorDashboard = function ({
                             setSelectedLote(lote);
                             setView("wizard");
                           }}
-                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                          className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg"
                         >
-                          Planificar
+                          Iniciar Planificación
                         </button>
                       )}
                       {lote.estado === "Planificación generada" && (
@@ -2344,9 +2463,12 @@ const ProductorDashboard = function ({
                             setSelectedLote(lote);
                             setView("reporte");
                           }}
-                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700"
+                          className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                         >
-                          Ver Reporte
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                          </svg>
+                          Ver Recomendación
                         </button>
                       )}
                     </div>
