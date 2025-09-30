@@ -1664,12 +1664,18 @@ const CargaDatos = function ({ lote, onBack, onComplete }) {
 const ReporteRecomendacion = function ({ lote, onBack }) {
   if (!lote.planificacion) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-xl text-gray-600">No hay planificación generada</p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50 flex items-center justify-center p-4">
+        <div className="text-center bg-white rounded-xl shadow-2xl p-12 max-w-md">
+          <div className="bg-amber-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <p className="text-2xl font-bold text-gray-800 mb-2">Sin Planificación</p>
+          <p className="text-gray-600 mb-6">No se ha generado una planificación para este lote</p>
           <button
             onClick={onBack}
-            className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-semibold shadow-lg"
           >
             Volver al Dashboard
           </button>
@@ -1679,154 +1685,209 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
   }
 
   const rec = lote.planificacion.recomendacion;
+  const costoHa = rec.costoTotal / lote.superficie;
 
   const handleExportPDF = function () {
-    alert("Funcionalidad de exportación PDF en desarrollo. En versión completa se generará un PDF descargable.");
+    alert("Funcionalidad de exportación PDF en desarrollo. En versión completa se generará un PDF descargable con formato profesional.");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-lg mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-50">
+      {/* Header Navbar Profesional */}
+      <nav className="bg-gradient-to-r from-green-800 to-green-700 shadow-2xl border-b-4 border-green-900 mb-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center space-x-4">
               <button
                 onClick={onBack}
-                className="mr-4 text-gray-600 hover:text-gray-800"
+                className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg font-medium transition-all backdrop-blur-sm border border-white border-opacity-30 flex items-center gap-2"
               >
-                ← Volver
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/>
+                </svg>
+                Volver
               </button>
-              <span className="text-2xl font-bold text-green-600">
-                Reporte de Planificación
-              </span>
-              <span className="ml-4 text-gray-600">- {lote.nombre}</span>
+              <div className="border-l border-white border-opacity-30 pl-4">
+                <p className="text-green-200 text-xs font-semibold uppercase tracking-wide">Reporte Técnico</p>
+                <p className="text-white text-xl font-bold">{lote.nombre}</p>
+              </div>
             </div>
-            <button
-              onClick={handleExportPDF}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center bg-blue-900 bg-opacity-50 backdrop-blur-sm px-4 py-2 rounded-lg border border-blue-400">
+                <svg className="w-5 h-5 text-blue-300 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                </svg>
+                <div>
+                  <p className="text-xs text-blue-200">ENSO</p>
+                  <p className="text-sm font-bold text-white">{lote.enso} ({(rec.ajusteENSO - 1) * 100 > 0 ? "+" : ""}{((rec.ajusteENSO - 1) * 100).toFixed(0)}%)</p>
+                </div>
+              </div>
+              <button
+                onClick={handleExportPDF}
+                className="bg-white text-green-800 px-6 py-3 rounded-lg hover:bg-green-50 font-bold transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Exportar PDF
-            </button>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Exportar PDF
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Información del Lote */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4">Información del Lote</h2>
-          <div className="grid grid-cols-3 gap-6">
-            <div>
-              <p className="text-sm text-gray-600">Lote</p>
-              <p className="font-semibold text-lg">{lote.nombre}</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {/* Resumen Ejecutivo */}
+        <div className="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-2xl p-8 mb-8 border-t-4 border-green-600">
+          <div className="flex items-center mb-6">
+            <div className="bg-green-600 p-3 rounded-lg mr-4">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Campaña</p>
-              <p className="font-semibold text-lg">{lote.campana}</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Superficie</p>
-              <p className="font-semibold text-lg">{lote.superficie} ha</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Cultivo</p>
-              <p className="font-semibold text-lg capitalize">
-                {lote.planificacion.cultivo}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Fecha de Siembra</p>
-              <p className="font-semibold text-lg">
-                {lote.planificacion.fechaSiembra}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Estado ENSO</p>
-              <p className="font-semibold text-lg text-blue-600">
-                {lote.enso} ({(rec.ajusteENSO - 1) * 100 > 0 ? "+" : ""}{((rec.ajusteENSO - 1) * 100).toFixed(0)}%)
-              </p>
+              <h2 className="text-3xl font-bold text-gray-800">Resumen Ejecutivo</h2>
+              <p className="text-gray-600">Planificación Agronómica - Campaña {lote.campana}</p>
             </div>
           </div>
-        </div>
 
-        {/* Rendimiento Esperado */}
-        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow p-6 mb-6">
-          <div className="text-center">
-            <p className="text-lg mb-2">Rendimiento Esperado</p>
-            <p className="text-5xl font-bold">{rec.rendimientoEsperado} kg/ha</p>
-            <p className="text-sm mt-2 opacity-90">
-              (Ajustado por condición ENSO: {lote.enso})
-            </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-green-500 transition-all">
+              <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Lote</p>
+              <p className="text-2xl font-bold text-gray-800">{lote.nombre}</p>
+            </div>
+            <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-green-500 transition-all">
+              <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Superficie</p>
+              <p className="text-2xl font-bold text-gray-800">{lote.superficie} <span className="text-sm">ha</span></p>
+            </div>
+            <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-green-500 transition-all">
+              <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Cultivo</p>
+              <p className="text-2xl font-bold text-green-700 capitalize">{lote.planificacion.cultivo}</p>
+            </div>
+            <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-green-500 transition-all">
+              <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Siembra</p>
+              <p className="text-lg font-bold text-gray-800">{new Date(lote.planificacion.fechaSiembra).toLocaleDateString('es-AR', {day: 'numeric', month: 'short'})}</p>
+            </div>
+          </div>
+
+          {/* KPIs Principales */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Rendimiento */}
+            <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-green-100 text-sm font-semibold uppercase tracking-wide">Rendimiento Objetivo</p>
+                <svg className="w-6 h-6 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+              </div>
+              <p className="text-5xl font-bold mb-2">{rec.rendimientoEsperado}</p>
+              <p className="text-green-100 text-lg">kg/ha</p>
+              <div className="mt-3 pt-3 border-t border-green-500">
+                <p className="text-xs text-green-200">Ajuste ENSO: {lote.enso} ({(rec.ajusteENSO - 1) * 100 > 0 ? "+" : ""}{((rec.ajusteENSO - 1) * 100).toFixed(0)}%)</p>
+              </div>
+            </div>
+
+            {/* Inversión Total */}
+            <div className="bg-gradient-to-br from-amber-600 to-amber-700 rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-amber-100 text-sm font-semibold uppercase tracking-wide">Inversión Total</p>
+                <svg className="w-6 h-6 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <p className="text-5xl font-bold mb-2">${(rec.costoTotal / 1000).toFixed(1)}K</p>
+              <p className="text-amber-100 text-lg">Pesos</p>
+              <div className="mt-3 pt-3 border-t border-amber-500">
+                <p className="text-xs text-amber-200">Total: ${rec.costoTotal.toLocaleString()}</p>
+              </div>
+            </div>
+
+            {/* Costo por Hectárea */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 text-white shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-blue-100 text-sm font-semibold uppercase tracking-wide">Costo por Hectárea</p>
+                <svg className="w-6 h-6 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <p className="text-5xl font-bold mb-2">${Math.round(costoHa).toLocaleString()}</p>
+              <p className="text-blue-100 text-lg">/ha</p>
+              <div className="mt-3 pt-3 border-t border-blue-500">
+                <p className="text-xs text-blue-200">Métrica clave de inversión</p>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Fertilizantes */}
         {rec.fertilizantes.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center">
-              <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
-              Fertilizantes
-            </h3>
+          <div className="bg-white rounded-xl shadow-xl mb-8 border-l-4 border-amber-500 overflow-hidden">
+            <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b-2 border-amber-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="bg-amber-500 p-3 rounded-lg mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">Plan de Fertilización</h3>
+                    <p className="text-sm text-gray-600">Nutrientes basados en análisis de suelo</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-gray-500 uppercase font-semibold">Subtotal</p>
+                  <p className="text-2xl font-bold text-amber-600">
+                    ${rec.fertilizantes.reduce(function (sum, f) { return sum + f.precio; }, 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Producto
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Dosis/ha
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Cantidad Total
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Stock
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Precio Total
-                    </th>
+                <thead>
+                  <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left font-bold">Producto</th>
+                    <th className="px-6 py-4 text-right font-bold">Dosis/ha</th>
+                    <th className="px-6 py-4 text-right font-bold">Cantidad Total</th>
+                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {rec.fertilizantes.map(function (f, idx) {
+                    const haySuficienteStock = f.cantidadTotal <= f.stock;
                     return (
-                      <tr key={idx} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium">
-                          {f.nombre}
+                      <tr key={idx} className="hover:bg-amber-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <p className="font-bold text-gray-800">{f.nombre}</p>
+                          <p className="text-xs text-gray-500 mt-1">Fertilizante NPK</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          {f.cantidadHa} {f.unidad}
+                        <td className="px-6 py-4 text-right">
+                          <p className="font-semibold text-gray-800">{f.cantidadHa}</p>
+                          <p className="text-xs text-gray-500">{f.unidad}/ha</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          {f.cantidadTotal} {f.unidad}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-lg font-bold text-gray-800">{f.cantidadTotal.toLocaleString()}</p>
+                          <p className="text-xs text-gray-500">{f.unidad}</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          <span
-                            className={
-                              f.cantidadTotal <= f.stock
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }
-                          >
-                            {f.stock} {f.unidad}
-                          </span>
+                        <td className="px-6 py-4 text-right">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
+                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                            </p>
+                            <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
+                              {f.stock.toLocaleString()} {f.unidad}
+                            </p>
+                          </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          ${f.precio.toLocaleString()}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-gray-700">${(f.precio / f.cantidadTotal).toFixed(2)}</p>
+                          <p className="text-xs text-gray-500">/{f.unidad}</p>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-xl font-bold text-gray-800">${f.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -1839,58 +1900,73 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
 
         {/* Semillas */}
         {rec.semillas.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center">
-              <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-              Semillas
-            </h3>
+          <div className="bg-white rounded-xl shadow-xl mb-8 border-l-4 border-green-600 overflow-hidden">
+            <div className="bg-gradient-to-r from-green-50 to-white p-6 border-b-2 border-green-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="bg-green-600 p-3 rounded-lg mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">Plan de Siembra</h3>
+                    <p className="text-sm text-gray-600">Densidad ajustada por condición ENSO</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-gray-500 uppercase font-semibold">Subtotal</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    ${rec.semillas.reduce(function (sum, s) { return sum + s.precio; }, 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Variedad
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Densidad
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Cantidad
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Stock
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Precio Total
-                    </th>
+                <thead>
+                  <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left font-bold">Variedad</th>
+                    <th className="px-6 py-4 text-right font-bold">Densidad</th>
+                    <th className="px-6 py-4 text-right font-bold">Cantidad</th>
+                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {rec.semillas.map(function (s, idx) {
+                    const haySuficienteStock = s.cantidadTotal <= s.stock;
                     return (
-                      <tr key={idx} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium">
-                          {s.nombre}
+                      <tr key={idx} className="hover:bg-green-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <p className="font-bold text-gray-800">{s.nombre}</p>
+                          <p className="text-xs text-gray-500 mt-1 capitalize">{lote.planificacion.cultivo}</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          {s.densidad.toLocaleString()} pl/ha
+                        <td className="px-6 py-4 text-right">
+                          <p className="font-semibold text-gray-800">{s.densidad.toLocaleString()}</p>
+                          <p className="text-xs text-gray-500">pl/ha</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          {s.cantidadTotal} {s.unidad}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-lg font-bold text-gray-800">{s.cantidadTotal.toLocaleString()}</p>
+                          <p className="text-xs text-gray-500">{s.unidad}</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          <span
-                            className={
-                              s.cantidadTotal <= s.stock
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }
-                          >
-                            {s.stock} {s.unidad}
-                          </span>
+                        <td className="px-6 py-4 text-right">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
+                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                            </p>
+                            <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
+                              {s.stock.toLocaleString()} {s.unidad}
+                            </p>
+                          </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          ${s.precio.toLocaleString()}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-gray-700">${(s.precio / s.cantidadTotal).toFixed(2)}</p>
+                          <p className="text-xs text-gray-500">/{s.unidad}</p>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-xl font-bold text-gray-800">${s.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -1903,58 +1979,73 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
 
         {/* Herbicidas */}
         {rec.herbicidas.length > 0 && (
-          <div className="bg-white rounded-lg shadow p-6 mb-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center">
-              <span className="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
-              Herbicidas
-            </h3>
+          <div className="bg-white rounded-xl shadow-xl mb-8 border-l-4 border-red-500 overflow-hidden">
+            <div className="bg-gradient-to-r from-red-50 to-white p-6 border-b-2 border-red-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="bg-red-500 p-3 rounded-lg mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">Control de Malezas</h3>
+                    <p className="text-sm text-gray-600">Herbicidas según mapa de malezas</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-gray-500 uppercase font-semibold">Subtotal</p>
+                  <p className="text-2xl font-bold text-red-600">
+                    ${rec.herbicidas.reduce(function (sum, h) { return sum + h.precio; }, 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-                      Producto
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Dosis/ha
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Cantidad Total
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Stock
-                    </th>
-                    <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
-                      Precio Total
-                    </th>
+                <thead>
+                  <tr className="bg-gray-800 text-white text-xs uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left font-bold">Producto</th>
+                    <th className="px-6 py-4 text-right font-bold">Dosis/ha</th>
+                    <th className="px-6 py-4 text-right font-bold">Cantidad Total</th>
+                    <th className="px-6 py-4 text-right font-bold">Disponibilidad</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Unit.</th>
+                    <th className="px-6 py-4 text-right font-bold">Precio Total</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {rec.herbicidas.map(function (h, idx) {
+                    const haySuficienteStock = h.cantidadTotal <= h.stock;
                     return (
-                      <tr key={idx} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm font-medium">
-                          {h.nombre}
+                      <tr key={idx} className="hover:bg-red-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <p className="font-bold text-gray-800">{h.nombre}</p>
+                          <p className="text-xs text-gray-500 mt-1">Herbicida</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          {h.cantidadHa} {h.unidad}/ha
+                        <td className="px-6 py-4 text-right">
+                          <p className="font-semibold text-gray-800">{h.cantidadHa}</p>
+                          <p className="text-xs text-gray-500">{h.unidad}/ha</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          {h.cantidadTotal} {h.unidad}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-lg font-bold text-gray-800">{h.cantidadTotal.toLocaleString()}</p>
+                          <p className="text-xs text-gray-500">{h.unidad}</p>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right">
-                          <span
-                            className={
-                              h.cantidadTotal <= h.stock
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }
-                          >
-                            {h.stock} {h.unidad}
-                          </span>
+                        <td className="px-6 py-4 text-right">
+                          <div className={haySuficienteStock ? "bg-green-100 rounded-lg px-3 py-2 inline-block" : "bg-red-100 rounded-lg px-3 py-2 inline-block"}>
+                            <p className={haySuficienteStock ? "font-bold text-green-700" : "font-bold text-red-700"}>
+                              {haySuficienteStock ? "✓ Stock OK" : "⚠ Insuficiente"}
+                            </p>
+                            <p className={haySuficienteStock ? "text-xs text-green-600" : "text-xs text-red-600"}>
+                              {h.stock.toLocaleString()} {h.unidad}
+                            </p>
+                          </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-right font-semibold">
-                          ${h.precio.toLocaleString()}
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-gray-700">${(h.precio / h.cantidadTotal).toFixed(2)}</p>
+                          <p className="text-xs text-gray-500">/{h.unidad}</p>
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <p className="text-xl font-bold text-gray-800">${h.precio.toLocaleString()}</p>
                         </td>
                       </tr>
                     );
@@ -1965,33 +2056,79 @@ const ReporteRecomendacion = function ({ lote, onBack }) {
           </div>
         )}
 
-        {/* Costo Total */}
-        <div className="bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg shadow p-8 mb-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-lg mb-2">Costo Total de Insumos</p>
-              <p className="text-5xl font-bold">
-                ${rec.costoTotal.toLocaleString()}
-              </p>
+        {/* Resumen Financiero Final */}
+        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl p-8 mb-8 text-white">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-2">
+              <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide mb-2">Inversión Total en Insumos</p>
+              <p className="text-6xl font-bold mb-4">${rec.costoTotal.toLocaleString()}</p>
+              <div className="grid grid-cols-3 gap-4 mt-6">
+                <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                  <p className="text-xs text-gray-400 mb-1">Fertilización</p>
+                  <p className="text-lg font-bold">${rec.fertilizantes.reduce(function (s, f) { return s + f.precio; }, 0).toLocaleString()}</p>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                  <p className="text-xs text-gray-400 mb-1">Semillas</p>
+                  <p className="text-lg font-bold">${rec.semillas.reduce(function (s, f) { return s + f.precio; }, 0).toLocaleString()}</p>
+                </div>
+                <div className="bg-white bg-opacity-10 rounded-lg p-3">
+                  <p className="text-xs text-gray-400 mb-1">Herbicidas</p>
+                  <p className="text-lg font-bold">${rec.herbicidas.reduce(function (s, h) { return s + h.precio; }, 0).toLocaleString()}</p>
+                </div>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-sm opacity-90">Costo por hectárea</p>
-              <p className="text-2xl font-semibold">
-                ${Math.round(rec.costoTotal / lote.superficie).toLocaleString()}/ha
-              </p>
+            <div className="flex flex-col justify-center items-end border-l border-gray-700 pl-6">
+              <p className="text-gray-400 text-sm font-semibold uppercase tracking-wide mb-2">Costo por Hectárea</p>
+              <p className="text-5xl font-bold mb-2">${Math.round(costoHa).toLocaleString()}</p>
+              <p className="text-gray-400 text-lg">/ha</p>
+              <div className="mt-4 bg-amber-500 bg-opacity-20 border border-amber-500 rounded-lg px-4 py-2">
+                <p className="text-xs text-amber-300 font-semibold">Superficie: {lote.superficie} ha</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Notas */}
-        <div className="bg-blue-50 rounded-lg p-6 mb-8">
-          <h3 className="font-semibold text-gray-800 mb-3">Notas Importantes</h3>
-          <ul className="text-sm text-gray-700 space-y-2">
-            <li>• Las cantidades recomendadas están basadas en el análisis de suelo y los requerimientos del cultivo.</li>
-            <li>• El ajuste ENSO ({lote.enso}) ha sido aplicado al rendimiento objetivo y densidad de siembra.</li>
-            <li>• Verificar disponibilidad de stock antes de confirmar la compra.</li>
-            <li>• Los precios mostrados son estimados y pueden variar según disponibilidad.</li>
-          </ul>
+        {/* Notas Agronómicas */}
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-8 mb-8">
+          <div className="flex items-start">
+            <div className="bg-blue-600 p-3 rounded-lg mr-4">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">Consideraciones Técnicas</h3>
+              <div className="space-y-3 text-sm text-gray-700">
+                <div className="flex items-start">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <p><strong>Análisis de Suelo:</strong> Las recomendaciones están basadas en el análisis de suelo cargado (pH: {lote.analisisSuelo?.ph}, MO: {lote.analisisSuelo?.mo}%, P: {lote.analisisSuelo?.p} ppm, N: {lote.analisisSuelo?.n} kg/ha).</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <p><strong>Ajuste Climático:</strong> Se aplicó un ajuste del {((rec.ajusteENSO - 1) * 100).toFixed(0)}% por condición ENSO {lote.enso} en rendimiento objetivo y densidad de siembra.</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <p><strong>Disponibilidad de Stock:</strong> Verificar la disponibilidad real de productos marcados con "Insuficiente" antes de confirmar la compra.</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <p><strong>Precios:</strong> Los valores mostrados son estimativos y pueden variar según condiciones de mercado y disponibilidad al momento de la compra.</p>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-blue-600 font-bold mr-2">•</span>
+                  <p><strong>Aplicación:</strong> Seguir las recomendaciones del fabricante y normativas vigentes para la aplicación segura de productos fitosanitarios.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer profesional */}
+        <div className="text-center text-gray-500 text-xs border-t pt-6">
+          <p className="mb-2">Reporte generado por <span className="font-bold text-green-600">ACRE Platform</span></p>
+          <p>Este documento es una recomendación técnica y debe ser evaluada por un profesional agronómico</p>
+          <p className="mt-2">Fecha de generación: {new Date().toLocaleDateString('es-AR', {day: 'numeric', month: 'long', year: 'numeric'})}</p>
         </div>
       </div>
     </div>
